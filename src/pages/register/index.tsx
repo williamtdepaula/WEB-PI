@@ -14,7 +14,7 @@ function Register() {
             <BaseContent>
                 <div className="ContainerForm">
                     <TextInput
-                        title="Nome completo12"
+                        title="Nome completo"
                         value={nome}
                         onChange={({target}) => setNome(target.value)}
                     />
