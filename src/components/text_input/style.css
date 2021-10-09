@@ -1,0 +1,15 @@
+.Title{
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.Input {
+    width: 70%;
+    height: 35px;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #ababab;
+    outline-color: #5398D8;
+}
