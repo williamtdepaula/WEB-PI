@@ -9,7 +9,7 @@
     width: 70%;
     height: 35px;
     border-radius: 5px;
-    border-width: 1px;
-    border-color: #ababab;
     outline-color: #5398D8;
+    border: 0.5px solid #ababab;
+    border-radius: 3px;
 }

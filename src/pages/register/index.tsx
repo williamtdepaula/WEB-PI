@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import BaseContent from '../../components/base_content';
 import BasePage from '../../components/base_page';
+import Button from '../../components/button';
 import TextInput from '../../components/text_input';
 import './style.css';
 
@@ -23,6 +24,7 @@ function Register() {
                         onChange={({target}) => setEmail(target.value)}
                     />
                 </div>
+                <Button/>
             </BaseContent>
         </BasePage>
     );
