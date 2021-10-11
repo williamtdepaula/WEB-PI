@@ -1,6 +1,5 @@
 import { FC } from 'react'
 import "./style.css"
-import 'react-dropdown/style.css';
 import Select from 'react-select';
 
 interface DropDownPickerProps {

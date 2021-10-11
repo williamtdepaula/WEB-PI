@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import BaseContent from '../../components/base_content';
 import BasePage from '../../components/base_page';
 import Button from '../../components/button';
 import DatePickerBR from '../../components/date_picker';
 import DropDownPicker from '../../components/dropdown';
+import Modal from '../../components/modal';
 import RadioCollection from '../../components/radio/radio_collection';
-import TextInput from '../../components/text_input';
+import TextInput, { ItemFormRef, validateAll } from '../../components/text_input';
+import { phoneMask } from '../../resources/masks';
+import { addressIsValid, emailIsValid, nameIsValid, phoneIsValid } from '../../resources/validations';
 import './style.css';
 
 function Register() {
+    const nameRef = useRef<ItemFormRef>(null)
+    const emailRef = useRef<ItemFormRef>(null)
+    const addressRef = useRef<ItemFormRef>(null)
+    const phoneRef = useRef<ItemFormRef>(null)
+
     const [nome, setNome] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [address, setAddress] = useState<string>("")
@@ -19,24 +27,63 @@ function Register() {
     const [groupRisk, setGroupRisk] = useState<string | null>(null)
     const [UBS, setUBS] = useState<string | null>(null)
 
+    function onSave() {
+        if (validateAll([nameRef, addressRef, emailRef, phoneRef])) {
+            console.log({
+                nome,
+                email,
+                address,
+                phone,
+                gender,
+                birthDate,
+                bestTimeToContact,
+                groupRisk,
+                UBS
+            })
+        }
+    }
+
     return (
         <BasePage>
             <BaseContent>
+                <Modal handleClose={() => { }} show={false}>
+                    <div style={{width: 300, height: 200, background:'#098'}}>
+                        Teste
+                    </div>
+                </Modal>
                 <div className="ContainerForm">
                     <TextInput
+                        ref={nameRef}
+                        isValid={nameIsValid(nome)}
                         title="Nome completo"
                         value={nome}
                         onChange={({ target }) => setNome(target.value)}
                         style={{ width: "100%" }}
+                        errorMessage='Esse campo é obrigatório'
+                        placeholder='Digite seu nome'
                     />
                     <TextInput
+                        ref={emailRef}
+                        isValid={emailIsValid(email)}
                         title="E-mail"
+                        placeholder='Digite seu e-mail'
                         value={email}
+                        errorMessage={
+                            email.length === 0
+                                ?
+                                "Esse campo é obrigatório"
+                                :
+                                "E-mail inválido"
+                        }
                         style={{ width: "100%" }}
                         onChange={({ target }) => setEmail(target.value)}
                     />
                     <TextInput
+                        ref={addressRef}
+                        isValid={addressIsValid(address)}
                         title="Endereço"
+                        placeholder='Nº, Bairro, Cidade'
+                        errorMessage='Esse campo é obrigatório'
                         value={address}
                         style={{ width: "100%" }}
                         onChange={({ target }) => setAddress(target.value)}
@@ -45,8 +92,18 @@ function Register() {
                     <div className="ContainerItemsSideBySide">
                         <div className="ItemSideBySideTextInput">
                             <TextInput
+                                ref={phoneRef}
+                                isValid={phoneIsValid(phone)}
                                 title='Telefone'
-                                value={phone}
+                                value={phoneMask(phone)}
+                                placeholder='(11) 12345-9744'
+                                errorMessage={
+                                    phone.length === 0
+                                        ?
+                                        "Esse campo é obrigatório"
+                                        :
+                                        "Número de telefone inválido"
+                                }
                                 style={{ width: "100%" }}
                                 onChange={({ target }) => setPhone(target.value)}
                             />
@@ -99,7 +156,7 @@ function Register() {
                         </div>
                     </div>
                 </div>
-                <Button />
+                <Button onClick={onSave} />
             </BaseContent>
         </BasePage>
     );
