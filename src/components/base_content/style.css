@@ -7,5 +7,11 @@
     padding-top: 20px;
 }
 .ContentContainer {
-    width: 60%;
+    width: 70%;
+}
+
+@media screen and (max-width: 769px) {
+    .ContentContainer {
+        width: 100%;
+    }
 }

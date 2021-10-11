@@ -1,6 +1,35 @@
-.ContainerForm{
+.ContainerForm {
     width: 100%;
     background-color: #eef2f5;
     border-radius: 5px;
     padding: 16px
+}
+
+.ContainerItemsSideBySide {
+    display: flex;
+    flex-direction: row;
+}
+
+.ItemSideBySideTextInput {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.ItemRadioSideBySide {
+    flex: 2;
+}
+
+@media screen and (max-width: 769px) {
+    .ContainerForm {
+        background-color: transparent;
+        padding: 0px
+    }
+    .ContainerItemsSideBySide {
+        display: flex;
+        flex-direction: column;
+    }
+    .ItemSideBySideTextInput {
+        margin-right: 0px;
+    }
+    
 }

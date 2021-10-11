@@ -5,10 +5,11 @@ interface TextInputProps {
     title: string;
     value: string;
     maxLength?: number;
+    style?: React.CSSProperties;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TextInput: FC<TextInputProps> = ({title, value, maxLength = 500, onChange }) => (
+const TextInput: FC<TextInputProps> = ({title, value, maxLength = 500, style, onChange }) => (
     <Fragment>
         <div className="Title">{title}</div>
         <input
@@ -16,6 +17,7 @@ const TextInput: FC<TextInputProps> = ({title, value, maxLength = 500, onChange 
             maxLength={maxLength}
             onChange={onChange}
             className={"Input"}
+            style={style}
         />
     </Fragment>
 )

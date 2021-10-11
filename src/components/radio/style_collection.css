@@ -1,0 +1,15 @@
+.ContainerRadioOptions{
+    display: flex;
+    flex-direction: column;
+    font-size: 18;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 100%;
+}
+.ItemsRadio {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: center;
+}
