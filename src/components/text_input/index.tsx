@@ -10,7 +10,7 @@ export function validateAll(itemsToValidate: RefObject<ItemFormRef>[]){
 
     const errors = responses?.filter((res) => !res);
 
-    return errors ? errors.length == 0 : false;
+    return errors ? errors.length === 0 : false;
 }
 
 interface TextInputProps {

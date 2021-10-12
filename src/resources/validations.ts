@@ -19,7 +19,7 @@ function CPFIsValid(CPF: string) {
         }
         let same_digits = true;
         for (let i = 0; i < cpf.length - 1; i++) {
-            if (cpf.charAt(i) != cpf.charAt(i + 1)) {
+            if (cpf.charAt(i) !== cpf.charAt(i + 1)) {
                 same_digits = false;
                 break;
             }

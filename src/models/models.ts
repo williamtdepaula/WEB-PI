@@ -24,7 +24,7 @@ interface Person {
     horario_contato?: string;
     observacoes?: string;
     UBS_idUBS: string;
-    idGrupoRisco: string;
+    grupos_risco: string[];
 }
 
 export type { GroupRisk, UBS, Person }

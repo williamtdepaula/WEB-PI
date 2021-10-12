@@ -2,15 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import BaseContent from '../../components/base_content';
 import BasePage from '../../components/base_page';
 import Button from '../../components/button';
+import CheckboxCollection, { OptionCheckbox } from '../../components/checkbox/checkbox_collection';
 import DatePicker from '../../components/date_picker';
 import DropDownPicker, { Option } from '../../components/dropdown';
+import Loading from '../../components/loading';
 import Modal from '../../components/modal';
 import RadioCollection from '../../components/radio/radio_collection';
 import TextInput, { ItemFormRef, validateAll } from '../../components/text_input';
 import TextInputMultiline from '../../components/text_input/text_input_multiline';
+import { useSmallScreen } from '../../resources/hooks';
 import { maskCpf, maskRemoveAllSpecialCharacters, phoneMask } from '../../resources/masks';
 import { addressIsValid, CPFIsValid, emailIsValid, nameIsValid, phoneIsValid } from '../../resources/validations';
 import { getGroupRiskAndUBSs, savePerson } from '../../sevices/requests';
+
 import './style.css';
 
 function Register() {
@@ -19,6 +23,8 @@ function Register() {
     const emailRef = useRef<ItemFormRef>(null)
     const addressRef = useRef<ItemFormRef>(null)
     const phoneRef = useRef<ItemFormRef>(null)
+
+    const isResponsive = useSmallScreen()
 
     const [nome, setNome] = useState<string>("")
     const [email, setEmail] = useState<string>("")
@@ -29,14 +35,15 @@ function Register() {
     const [gender, setGender] = useState<string>("M")
     const [birthDate, setBirthDate] = useState<string>("")
     const [bestTimeToContact, setBestTimeToContact] = useState<string>("M")
-    const [groupRisk, setGroupRisk] = useState<string>('')
+    const [groupRisk, setGroupRisk] = useState<string[]>([''])
     const [UBS, setUBS] = useState<string>('')
 
     //Page state controll
     const [loading, setLoading] = useState<boolean>(false);
     const [optionsUBS, setOptionsUBS] = useState<Option[]>([]);
-    const [optionsGroupRisk, setOptionsGroupRisk] = useState<Option[]>([]);
+    const [optionsGroupRisk, setOptionsGroupRisk] = useState<OptionCheckbox[]>([]);
     const [status, setStatus] = useState<{ success: boolean, message: string } | null>(null);
+    const [saving, setSaving] = useState<boolean>(false);
 
     useEffect(() => {
         fetchData();
@@ -58,7 +65,6 @@ function Register() {
 
             if (optionsUBSTreated.length > 0 && optionsUBSTreated.length > 0) {
                 setUBS(optionsUBSTreated[0].value)
-                setGroupRisk(optionsUBSTreated[0].value)
             }
         }
 
@@ -67,6 +73,7 @@ function Register() {
 
     async function onSave() {
         if (validateAll([nameRef, addressRef, emailRef, phoneRef, CPFRef])) {
+            setSaving(true)
             const { status } = await savePerson({
                 nome,
                 email,
@@ -76,7 +83,7 @@ function Register() {
                 genero: gender,
                 nascimento: birthDate,
                 horario_contato: bestTimeToContact,
-                idGrupoRisco: groupRisk,
+                grupos_risco: groupRisk.length === 0 ? ['1'] : groupRisk,//Se não tiver nenhum selecionado, o id deve ser 1 de "Nenhum"
                 UBS_idUBS: UBS,
                 observacoes: obs.length > 0 ? obs : undefined
             })
@@ -97,6 +104,7 @@ function Register() {
                     message: "Usuário criado com sucesso"
                 })
             }
+            setSaving(false)
         }
     }
 
@@ -109,7 +117,7 @@ function Register() {
 
             {loading
                 ?
-                <div>Carregando...</div>
+                <div><Loading color='blue' style={{height: 100}}/></div>
                 :
                 <BaseContent>
                     <Modal
@@ -174,7 +182,7 @@ function Register() {
                             ref={addressRef}
                             isValid={addressIsValid(address)}
                             title="Endereço"
-                            placeholder='Nº, Bairro, Cidade'
+                            placeholder='Nº, Rua, Bairro'
                             errorMessage='Esse campo é obrigatório'
                             value={address}
                             style={{ width: "100%" }}
@@ -224,23 +232,14 @@ function Register() {
                         </div>
 
                         <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySideTextInput">
+                            <div className="ItemSideBySideTextInput" style={{ flex: 1 }}>
                                 <DropDownPicker
                                     title='UBS mais próxima'
                                     options={optionsUBS}
                                     onSelect={setUBS}
                                 />
                             </div>
-                            <span style={{ marginLeft: 20 }} />
-                            <div className="ItemSideBySideTextInput">
-                                <DropDownPicker
-                                    title='Grupo de Risco'
-                                    options={optionsGroupRisk}
-                                    onSelect={setGroupRisk}
-                                />
-                            </div>
-                            <span style={{ marginLeft: 20 }} />
-                            <div className="ItemRadioSideBySide">
+                            <div className="ItemRadioSideBySide" style={{ flex: 1, marginLeft: isResponsive ? 0 : 40 }}>
                                 <RadioCollection
                                     nameCollection='radio_time_contact'
                                     title='Melhor horário para contato'
@@ -252,15 +251,27 @@ function Register() {
                                 />
                             </div>
                         </div>
-                        <TextInputMultiline
-                            title="Observações"
-                            placeholder='Digite algo...'
-                            value={obs}
-                            style={{ width: "100%", height: 100 }}
-                            onChange={({ target }) => setObs(target.value)}
-                        />
+
+                        <div className="ContainerItemsSideBySide">
+                            <div className="ItemSideBySideTextInput">
+                                <CheckboxCollection
+                                    title='Situação da sua saúde'
+                                    items={optionsGroupRisk.filter(item => item.value !== '1')}
+                                    onChange={setGroupRisk}
+                                />
+                            </div>
+                            <div className="ItemSideBySideTextInput" style={{ flex: 2 }}>
+                                <TextInputMultiline
+                                    title="Observações"
+                                    placeholder='Digite algo...'
+                                    value={obs}
+                                    style={{ width: "100%", height: 140 }}
+                                    onChange={({ target }) => setObs(target.value)}
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <Button onClick={onSave} />
+                    <Button onClick={onSave} loading={saving} />
                 </BaseContent>
             }
 
