@@ -267,6 +267,7 @@ function Register() {
                                     value={obs}
                                     style={{ width: "100%", height: 140 }}
                                     onChange={({ target }) => setObs(target.value)}
+                                    maxLength={300}
                                 />
                             </div>
                         </div>
