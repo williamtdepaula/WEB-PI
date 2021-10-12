@@ -11,6 +11,7 @@
     outline-color: #5398D8;
     border: 0.5px solid #ababab;
     border-radius: 3px;
+    resize: none;
 }
 .InputError {
     width: 70%;

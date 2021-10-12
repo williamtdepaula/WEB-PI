@@ -1,25 +1,76 @@
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width:100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+.modal-main {
+  position: fixed;
+  background: white;
+  width: 20%;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  padding: 3px;
+}
+
+.ModalContentContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 13px;
+  align-items: center;
+  justify-content: center;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-none {
+  display: none;
+}
+
+.CloseModalContainer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.ButtonClose {
+  display: flex;
+  width: 100%;
+  border-top: 0.5px solid #dfdfdf;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  padding-top: 10px;
+}
+
+.TitleBaseModal {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+}
+
+.MessageBaseModal {
+  margin-top: 10px;
+  font-size: 16px;
+  text-align: center;
+}
+
+@media screen and (max-width: 769px) {
+  .modal-main{
+    width: 80%;
   }
-  
-  .modal-main {
-    position:absolute;
-    background: white;
-    top:50%;
-    left:50%;
-    transform: translate(-50%,-50%);
-  }
-  
-  .display-block {
-    display: block;
-  }
-  
-  .display-none {
-    display: none;
-  }
+}

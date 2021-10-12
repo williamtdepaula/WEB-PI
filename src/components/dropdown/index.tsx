@@ -2,9 +2,14 @@ import { FC } from 'react'
 import "./style.css"
 import Select from 'react-select';
 
+export interface Option {
+    value: string, 
+    label: string,
+}
+
 interface DropDownPickerProps {
     title: string;
-    options: {value: string, label: string}[];
+    options: Option[];
     onSelect: (value: string) => void;
 }
 
