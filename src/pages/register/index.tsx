@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import BaseContent from '../../components/base_content';
 import BasePage from '../../components/base_page';
 import Button from '../../components/button';
-import DatePickerBR from '../../components/date_picker';
+import DatePicker from '../../components/date_picker';
 import DropDownPicker from '../../components/dropdown';
 import Modal from '../../components/modal';
 import RadioCollection from '../../components/radio/radio_collection';
@@ -109,7 +109,7 @@ function Register() {
                             />
                         </div>
                         <div className="ItemSideBySideTextInput">
-                            <DatePickerBR
+                            <DatePicker
                                 title="Data de nascimento"
                                 onSelectDate={setBirthDate}
                             />
