@@ -4,16 +4,17 @@ import Loading from '../loading';
 
 interface ButtonProps {
     onClick: () => void;
+    title: string;
     loading?: boolean;
 }
 
-const Button: FC<ButtonProps> = ({ onClick, loading }) => (
+const Button: FC<ButtonProps> = ({ onClick, loading, title }) => (
     <div className="Button" onClick={!loading ? onClick : undefined} style={{ padding: loading ? 5 : 10 }}>
         {loading
             ?
             <Loading color='white'/>
             :
-            <span>Salvar</span>
+            <span>{title}</span>
         }
     </div>
 )

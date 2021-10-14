@@ -3,7 +3,7 @@ import './style.css';
 
 interface ModalProps {
   handleClose: () => void;
-  show: boolean,
+  show: boolean;
   title: string;
   message: string;
 }

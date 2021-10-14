@@ -10,7 +10,7 @@ export interface PeopleResponse {
     data: Person[];
     pagination: {
         total: number;
-        lasPage: number;
+        lastPage: number;
         perPage: number;
         currentPage: number;
         from: number;
@@ -65,12 +65,11 @@ async function savePerson(person: PersonToSave): Promise<RequestResponse<string>
 
 async function getPeople(max: number, current_page: number): Promise<RequestResponse<PeopleResponse>> {
     try {
-        console.log("Teste", max, current_page)
         const { status, data }: RequestResponse<PeopleResponse> = await request.get('/people', {
-            data: {
+            params: {
                 max,
                 current_page
-            }
+            },
         })
 
         return {

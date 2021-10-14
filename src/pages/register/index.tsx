@@ -272,7 +272,7 @@ function Register() {
                             </div>
                         </div>
                     </div>
-                    <Button onClick={onSave} loading={saving} />
+                    <Button title='Salvar' onClick={onSave} loading={saving} />
                 </BaseContent>
             }
 

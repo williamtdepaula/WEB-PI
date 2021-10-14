@@ -1,6 +1,10 @@
 import { Fragment, useEffect, useState } from "react"
 import BaseContent from "../../components/base_content"
 import BasePage from "../../components/base_page"
+import Button from "../../components/button"
+import LinkButton from "../../components/button/link_button"
+import Loading from "../../components/loading"
+import ModalDetailsPerson from "../../components/modal/modal_details_person"
 import { Person } from "../../models/models"
 import { getPeople } from "../../sevices/requests"
 import './style.css'
@@ -8,23 +12,44 @@ import './style.css'
 const ListPeople = () => {
 
     const [people, setPeople] = useState<Person[]>([]);
+    const [personSelectedToShow, setPersonSelectedToShow] = useState<Person | null>(null);
+    const [showButtonLoadMore, setShowButtonLoadMore] = useState<boolean>(false);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         fetchData()
     }, [])
 
     async function fetchData() {
-        const { status, data } = await getPeople(15, 1);
+        setLoading(true)
+        const { status, data: response } = await getPeople(5, currentPage);
 
-        if ((status === 200 || status === 304) && data) {
-            setPeople(data.data)
+        if ((status === 200 || status === 304) && response) {
+            setPeople(old => old.concat(response.data));
+
+            let { lastPage } = response.pagination;
+
+            if (currentPage < lastPage) {
+                setShowButtonLoadMore(true);
+                setCurrentPage(currentPage + 1);
+            } else {
+                setShowButtonLoadMore(false);
+            }
+
         }
+        setLoading(false)
     }
 
     function renderLine() {
         return people.map((person, index) => {
             return (
-                <div className='LineTable' style={{ backgroundColor: index % 2 === 0 ? '#F0F0F0' : '#FFFFFF' }}>
+                <div
+                    key={person.CPF}
+                    className='LineTable'
+                    style={{ backgroundColor: index % 2 === 0 ? '#F0F0F0' : '#FFFFFF' }}
+                    onClick={() => setPersonSelectedToShow(person)}
+                >
                     <div className='ItemLineTable'>
                         {person.nome}
                     </div>
@@ -48,6 +73,16 @@ const ListPeople = () => {
     return (
         <BasePage>
             <BaseContent>
+                {
+                    personSelectedToShow &&
+                    <ModalDetailsPerson
+                        handleClose={() => setPersonSelectedToShow(null)}
+                        person={personSelectedToShow}
+                    />
+                }
+                {loading && people.length === 0 &&
+                    <Loading color='blue' style={{ height: 80 }} />
+                }
                 {people.length > 0 &&
                     <Fragment>
                         <div className='HeaderTable'>
@@ -68,6 +103,13 @@ const ListPeople = () => {
                             </div>
                         </div>
                         {renderLine()}
+                        {showButtonLoadMore &&
+                            <LinkButton
+                                title='Carregar mais'
+                                onClick={fetchData}
+                                loading={loading}
+                            />
+                        }
                     </Fragment>
                 }
             </BaseContent>
