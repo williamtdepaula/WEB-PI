@@ -3,11 +3,13 @@ import {
   BrowserRouter as Router,
   Route,
 } from "react-router-dom";
+import ListPeople from './pages/list_people';
 
 function App() {
   return (
     <Router>
         <Route component={Register}  path="/registro" />
+        <Route component={ListPeople}  path="/relatorio" />
     </Router>
   );
 }

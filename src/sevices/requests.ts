@@ -1,9 +1,21 @@
 import axios from 'axios'
-import { GroupRisk, Person, UBS } from '../models/models'
+import { GroupRisk, Person, PersonToSave, UBS } from '../models/models'
 
 export interface GroupRiskAndUBSsResponse {
     grupo_de_risco: GroupRisk[];
     UBSs: UBS[];
+}
+
+export interface PeopleResponse {
+    data: Person[];
+    pagination: {
+        total: number;
+        lasPage: number;
+        perPage: number;
+        currentPage: number;
+        from: number;
+        to: number
+    };
 }
 
 export interface RequestResponse<T> {
@@ -33,8 +45,7 @@ async function getGroupRiskAndUBSs(): Promise<RequestResponse<GroupRiskAndUBSsRe
     }
 }
 
-async function savePerson(person: Person): Promise<RequestResponse<string>> {
-    console.log("person", person)
+async function savePerson(person: PersonToSave): Promise<RequestResponse<string>> {
     try {
         const { status } = await request.post('/register', { ...person })
 
@@ -52,7 +63,32 @@ async function savePerson(person: Person): Promise<RequestResponse<string>> {
 }
 
 
+async function getPeople(max: number, current_page: number): Promise<RequestResponse<PeopleResponse>> {
+    try {
+        console.log("Teste", max, current_page)
+        const { status, data }: RequestResponse<PeopleResponse> = await request.get('/people', {
+            data: {
+                max,
+                current_page
+            }
+        })
+
+        return {
+            data,
+            status
+        }
+    } catch (error: any) {
+        console.log('API ERR', error)
+
+        return {
+            status: error.response.status
+        }
+    }
+}
+
+
 export {
     getGroupRiskAndUBSs,
-    savePerson
+    savePerson,
+    getPeople
 }
