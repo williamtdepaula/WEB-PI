@@ -6,6 +6,8 @@ import LinkButton from "../../components/button/link_button"
 import Loading from "../../components/loading"
 import ModalDetailsPerson from "../../components/modal/modal_details_person"
 import { Person } from "../../models/models"
+import { maskCpf } from "../../resources/masks"
+import { getGender, getGroupRiskTreated } from "../../resources/utils"
 import { getPeople } from "../../sevices/requests"
 import './style.css'
 
@@ -23,7 +25,7 @@ const ListPeople = () => {
 
     async function fetchData() {
         setLoading(true)
-        const { status, data: response } = await getPeople(5, currentPage);
+        const { status, data: response } = await getPeople(20, currentPage);
 
         if ((status === 200 || status === 304) && response) {
             setPeople(old => old.concat(response.data));
@@ -54,13 +56,13 @@ const ListPeople = () => {
                         {person.nome}
                     </div>
                     <div className='ItemLineTable'>
-                        {person.CPF}
+                        {maskCpf(person.CPF)}
                     </div>
                     <div className='ItemLineTable'>
-                        {person.genero}
+                        {getGender(person.genero)}
                     </div>
                     <div className='ItemLineTable'>
-                        {person.grupo_risco ? (person.grupo_risco).replace(',', ', ') : ''}
+                        {getGroupRiskTreated(person.grupo_risco)}
                     </div>
                     <div className='ItemLineTable'>
                         {person.UBS}
@@ -73,8 +75,7 @@ const ListPeople = () => {
     return (
         <BasePage>
             <BaseContent>
-                {
-                    personSelectedToShow &&
+                {personSelectedToShow &&
                     <ModalDetailsPerson
                         handleClose={() => setPersonSelectedToShow(null)}
                         person={personSelectedToShow}

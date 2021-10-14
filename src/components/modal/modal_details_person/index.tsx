@@ -1,5 +1,7 @@
 import { FC } from 'react';
 import { Person } from '../../../models/models';
+import { maskCpf, phoneMask } from '../../../resources/masks';
+import { getDateFromTimestamp, getGender, getGroupRiskTreated } from '../../../resources/utils';
 import './style.css';
 
 interface ModalProps {
@@ -26,14 +28,14 @@ const ModalDetailsPerson: FC<ModalProps> = ({ handleClose, person }) => {
                         CPF
                     </div>
                     <div className="ItemDetails">
-                        {person.CPF}
+                        {maskCpf(person.CPF)}
                     </div>
 
                     <div className="TitleItem">
                         Gênero
                     </div>
                     <div className="ItemDetails">
-                        {person.genero}
+                        {getGender(person.genero)}
                     </div>
 
                     <div className="TitleItem">
@@ -47,7 +49,7 @@ const ModalDetailsPerson: FC<ModalProps> = ({ handleClose, person }) => {
                         Telefone
                     </div>
                     <div className="ItemDetails">
-                        {person.telefone}
+                        {phoneMask(person.telefone)}
                     </div>
 
                     <div className="TitleItem">
@@ -61,7 +63,7 @@ const ModalDetailsPerson: FC<ModalProps> = ({ handleClose, person }) => {
                         Data de nascimento
                     </div>
                     <div className="ItemDetails">
-                        {person.nascimento}
+                        {getDateFromTimestamp(person.nascimento)}
                     </div>
 
                     <div className="TitleItem">
@@ -75,7 +77,7 @@ const ModalDetailsPerson: FC<ModalProps> = ({ handleClose, person }) => {
                         Grupo de Risco
                     </div>
                     <div className="ItemDetails">
-                        {person.grupo_risco}
+                        {getGroupRiskTreated(person.grupo_risco)}
                     </div>
 
                     <div className="TitleItem">
