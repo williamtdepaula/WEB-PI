@@ -1,7 +1,7 @@
 import { CSSProperties, FC } from 'react';
 import Lottie from 'react-lottie';
-import loadingWhiteAnimation from '../../assets/animations/loading_white.json';
-import loadingBlueAnimation from '../../assets/animations/loading_blue.json';
+import loadingWhiteAnimation from '../../../assets/animations/loading_white.json';
+import loadingBlueAnimation from '../../../assets/animations/loading_blue.json';
 
 interface LoadingProps {
     style?: CSSProperties;

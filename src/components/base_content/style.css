@@ -6,12 +6,37 @@
     align-items: center;
     padding-top: 20px;
 }
+
 .ContentContainer {
     width: 70%;
 }
 
+.ContainerItemsSideBySide {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.ItemSideBySide {
+    flex: 1;
+}
+
 @media screen and (max-width: 769px) {
     .ContentContainer {
-        width: 100%;
+        width: 90%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+    
+    .ContainerItemsSideBySide {
+        display: flex;
+        flex-direction: column;
+    }
+    .ItemSideBySide {
+        margin-right: 0px;
     }
 }

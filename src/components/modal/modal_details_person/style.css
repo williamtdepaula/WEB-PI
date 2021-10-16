@@ -13,11 +13,13 @@
     background: white;
     width: 30%;
     height: auto;
+    max-height: calc(100vh - 200px);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border-radius: 5px;
     padding: 3px;
+    overflow-x: auto;
   }
   
   .ModalDetailsContentContainer {

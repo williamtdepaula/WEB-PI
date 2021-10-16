@@ -54,10 +54,15 @@ function phoneIsValid(phone: string) {
     return maskRemoveAllSpecialCharacters(phone).length === 11 || maskRemoveAllSpecialCharacters(phone).length === 10
 }
 
+function stringHasOnlyNumbers(value: string) {
+    return /^\d+$/.test(value)
+}
+
 export {
     nameIsValid,
     emailIsValid,
     addressIsValid,
     phoneIsValid,
-    CPFIsValid
+    CPFIsValid,
+    stringHasOnlyNumbers
 }

@@ -5,7 +5,7 @@ import Button from '../../components/button';
 import CheckboxCollection, { OptionCheckbox } from '../../components/checkbox/checkbox_collection';
 import DatePicker from '../../components/date_picker';
 import DropDownPicker, { Option } from '../../components/dropdown';
-import Loading from '../../components/loading';
+import Loading from '../../components/animations/loading';
 import Modal from '../../components/modal';
 import RadioCollection from '../../components/radio/radio_collection';
 import TextInput, { ItemFormRef, validateAll } from '../../components/text_input';
@@ -138,7 +138,7 @@ function Register() {
                             placeholder='Digite seu nome'
                         />
                         <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySideTextInput">
+                            <div className="ItemSideBySide">
                                 <TextInput
                                     ref={emailRef}
                                     isValid={emailIsValid(email)}
@@ -157,7 +157,7 @@ function Register() {
                                 />
                             </div>
                             <span style={{ marginLeft: 20 }} />
-                            <div className="ItemSideBySideTextInput">
+                            <div className="ItemSideBySide">
                                 <TextInput
                                     ref={CPFRef}
                                     isValid={CPFIsValid(CPF)}
@@ -190,7 +190,7 @@ function Register() {
                         />
 
                         <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySideTextInput">
+                            <div className="ItemSideBySide">
                                 <TextInput
                                     ref={phoneRef}
                                     isValid={phoneIsValid(phone)}
@@ -210,7 +210,7 @@ function Register() {
                                 />
                             </div>
                             <span style={{ marginLeft: 20 }} />
-                            <div className="ItemSideBySideTextInput">
+                            <div className="ItemSideBySide">
                                 <DatePicker
                                     title="Data de nascimento"
                                     onSelectDate={setBirthDate}
@@ -232,7 +232,7 @@ function Register() {
                         </div>
 
                         <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySideTextInput" style={{ flex: 1 }}>
+                            <div className="ItemSideBySide" style={{ flex: 1 }}>
                                 <DropDownPicker
                                     title='UBS mais próxima'
                                     options={optionsUBS}
@@ -253,14 +253,14 @@ function Register() {
                         </div>
 
                         <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySideTextInput">
+                            <div className="ItemSideBySide">
                                 <CheckboxCollection
                                     title='Situação da sua saúde'
                                     items={optionsGroupRisk.filter(item => item.value !== '1')}
                                     onChange={setGroupRisk}
                                 />
                             </div>
-                            <div className="ItemSideBySideTextInput" style={{ flex: 2 }}>
+                            <div className="ItemSideBySide" style={{ flex: 2 }}>
                                 <TextInputMultiline
                                     title="Observações"
                                     placeholder='Digite algo...'

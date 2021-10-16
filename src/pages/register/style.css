@@ -5,15 +5,6 @@
     padding: 16px
 }
 
-.ContainerItemsSideBySide {
-    display: flex;
-    flex-direction: row;
-}
-
-.ItemSideBySideTextInput {
-    flex: 1;
-}
-
 .ItemRadioSideBySide {
     flex: 2;
 }
@@ -23,12 +14,4 @@
         background-color: transparent;
         padding: 0px
     }
-    .ContainerItemsSideBySide {
-        display: flex;
-        flex-direction: column;
-    }
-    .ItemSideBySideTextInput {
-        margin-right: 0px;
-    }
-    
 }

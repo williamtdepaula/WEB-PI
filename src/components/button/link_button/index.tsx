@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import './style.css';
-import Loading from '../../loading';
+import Loading from '../../animations/loading';
 
 interface LinkButtonProps {
     onClick: () => void;

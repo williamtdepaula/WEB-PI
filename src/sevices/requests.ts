@@ -24,7 +24,7 @@ export interface RequestResponse<T> {
 }
 
 const request = axios.create({
-    baseURL: "http://192.168.1.2:5000",
+    baseURL: "http://localhost:5000",
     timeout: 5000,
 })
 
@@ -63,12 +63,16 @@ async function savePerson(person: PersonToSave): Promise<RequestResponse<string>
 }
 
 
-async function getPeople(max: number, current_page: number): Promise<RequestResponse<PeopleResponse>> {
+async function getPeople(max: number, current_page: number, search?: string, UBSs?: string[], gruposRisco?: string[], generos?: string[]): Promise<RequestResponse<PeopleResponse>> {
     try {
         const { status, data }: RequestResponse<PeopleResponse> = await request.get('/people', {
             params: {
                 max,
-                current_page
+                current_page,
+                nomeOuCPF: search,
+                UBSs: UBSs ? UBSs?.join(',') : undefined,
+                grupos_risco: gruposRisco ? gruposRisco?.join(',') : undefined,
+                generos: generos ? generos?.join(',') : undefined,
             },
         })
 

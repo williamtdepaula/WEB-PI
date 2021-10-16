@@ -1,0 +1,22 @@
+.ContainerInputSearch {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin-bottom: 10px;
+    align-items: center;
+    border-bottom: 1px solid #969595;
+}
+
+.InputSearch {
+    width: 300px;
+    height: 35px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+
+@media screen and (max-width: 769px) {
+    .InputSearch {
+        width: calc(100vw - 50px);
+    }
+}
