@@ -1,10 +1,8 @@
 import { Fragment, useEffect, useState } from "react"
-import { Option } from "react-multi-select-component/dist/types/lib/interfaces"
 import BaseContent from "../../components/base_content"
 import BasePage from "../../components/base_page"
-import Button from "../../components/button"
 import LinkButton from "../../components/button/link_button"
-import DropdownMultiSelect from "../../components/dropdown_multiselect"
+import DropdownMultiSelect, { OptionDropDownMulti } from "../../components/dropdown_multiselect"
 import Loading from "../../components/animations/loading"
 import ModalDetailsPerson from "../../components/modal/modal_details_person"
 import SearchInput from "../../components/search_input"
@@ -20,7 +18,7 @@ let optionsUBSsSelected: string[] | undefined = undefined;
 let optionsGroupRiskSelected: string[] | undefined = undefined;
 let optionsGenderSelected: string[] | undefined = undefined;
 
-const optionsGender: Option[] = [
+const optionsGender: OptionDropDownMulti[] = [
     {
         label: 'Masculino',
         value: 'M'
@@ -42,8 +40,8 @@ const ListPeople = () => {
     const [showButtonLoadMore, setShowButtonLoadMore] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [loading, setLoading] = useState<boolean>(false);
-    const [optionsUBS, setOptionsUBS] = useState<Option[]>([]);
-    const [optionsGroupRisk, setOptionsGroupRisk] = useState<Option[]>([]);
+    const [optionsUBS, setOptionsUBS] = useState<OptionDropDownMulti[]>([]);
+    const [optionsGroupRisk, setOptionsGroupRisk] = useState<OptionDropDownMulti[]>([]);
 
     useEffect(() => {
         fetchData(true)

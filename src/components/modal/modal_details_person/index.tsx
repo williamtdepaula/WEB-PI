@@ -91,7 +91,7 @@ const ModalDetailsPerson: FC<ModalProps> = ({ handleClose, person }) => {
                         Observações
                     </div>
                     <div className="ItemDetails">
-                        {person.observacoes} Lorem ipsum per blandit nulla dictum purus posuere dictum, condimentum etiam lobortis vulputate at tincidunt pellentesque taciti, aenean augue eget tincidunt tristique vulputate tristique. integer cras semper interdum sollicitudin augue ut varius eget in mauris et mollis pretium, nostra etiam ligula aenean nisl luctus arcu class viverra rhoncus nullam turpis. volutpat iaculis morbi accumsan...
+                        {person.observacoes}
                     </div>
                 </div>
             </div>

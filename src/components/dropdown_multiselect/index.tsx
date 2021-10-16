@@ -2,7 +2,7 @@ import { FC } from "react";
 import './style.css'
 import Select, { MultiValue } from "react-select";
 
-interface OptionDropDownMulti {
+export interface OptionDropDownMulti {
     value: string;
     label: string;
 }

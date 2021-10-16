@@ -8,7 +8,7 @@ import ListPeople from './pages/list_people';
 function App() {
   return (
     <Router>
-        <Route component={Register}  path="/registro" />
+        <Route component={Register}  path="/" exact />
         <Route component={ListPeople}  path="/relatorio" />
     </Router>
   );
