@@ -24,7 +24,7 @@ export interface RequestResponse<T> {
 }
 
 const request = axios.create({
-    baseURL: "http://localhost:5000",
+    baseURL: process.env.REQUEST_URL,
     timeout: 5000,
 })
 
