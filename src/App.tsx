@@ -8,10 +8,10 @@ import ListPeople from './pages/list_people';
 
 function App() {
   return (
-    <HashRouter>
+    <Router>
         <Route component={Register}  path="/" exact />
         <Route component={ListPeople}  path="/relatorio" />
-    </HashRouter>
+    </Router>
   );
 }
 
