@@ -1,5 +1,7 @@
+
 import axios from 'axios'
 import { GroupRisk, Person, PersonToSave, UBS } from '../models/models'
+require('dotenv').config()
 
 export interface GroupRiskAndUBSsResponse {
     grupo_de_risco: GroupRisk[];
@@ -24,7 +26,7 @@ export interface RequestResponse<T> {
 }
 
 const request = axios.create({
-    baseURL: process.env.REQUEST_URL,
+    baseURL: process.env.REACT_APP_API,
     timeout: 5000,
 })
 
