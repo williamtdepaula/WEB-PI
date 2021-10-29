@@ -136,6 +136,7 @@ function Register() {
                             style={{ width: "100%" }}
                             errorMessage='Esse campo é obrigatório'
                             placeholder='Digite seu nome'
+                            maxLength={60}
                         />
                         <div className="ContainerItemsSideBySide">
                             <div className="ItemSideBySide">
@@ -154,6 +155,7 @@ function Register() {
                                     }
                                     style={{ width: "100%" }}
                                     onChange={({ target }) => setEmail(target.value)}
+                                    maxLength={60}
                                 />
                             </div>
                             <span style={{ marginLeft: 20 }} />
@@ -187,6 +189,7 @@ function Register() {
                             value={address}
                             style={{ width: "100%" }}
                             onChange={({ target }) => setAddress(target.value)}
+                            maxLength={200}
                         />
 
                         <div className="ContainerItemsSideBySide">
@@ -197,7 +200,7 @@ function Register() {
                                     title='Telefone'
                                     value={phoneMask(phone)}
                                     maxLength={15}
-                                    placeholder='(11) 12345-9744'
+                                    placeholder='(11) 12345-6789'
                                     errorMessage={
                                         phone.length === 0
                                             ?

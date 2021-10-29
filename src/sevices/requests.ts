@@ -51,7 +51,6 @@ async function savePerson(person: PersonToSave): Promise<RequestResponse<string>
     try {
         const { status } = await request.post('/register', { ...person })
 
-
         return {
             status
         }
