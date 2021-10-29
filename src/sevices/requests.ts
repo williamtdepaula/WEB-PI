@@ -32,8 +32,6 @@ const request = axios.create({
 
 async function getGroupRiskAndUBSs(): Promise<RequestResponse<GroupRiskAndUBSsResponse>> {
     try {
-        console.log("Hello")
-        console.log("API", process.env.REQUEST_URL)
         const { data, status } = await request.get<GroupRiskAndUBSsResponse>('/groupRiskAndUBS')
 
         return {
