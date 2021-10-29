@@ -1,7 +1,9 @@
-import app from 'express';
+const express = require("express")
+
+const app = express()
 
 let listenPort = process.env.PORT || 5000;
 
-app.application.listen(listenPort, ()=> {
+app.listen(listenPort, ()=> {
   console.log("server running on port "+ listenPort);
 })
