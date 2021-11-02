@@ -185,7 +185,7 @@ const ListPeople = () => {
 
                         <DropdownMultiSelect
                             name='genders'
-                            title='Genêro'
+                            title='Gênero'
                             options={optionsGender}
                             onSelectOptions={onChangeGendersFilter}
                         />
