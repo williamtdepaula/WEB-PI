@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Person } from '../../../models/models';
 import { maskCpf, phoneMask } from '../../../resources/masks';
-import { getDateFromTimestamp, getGender, getGroupRiskTreated } from '../../../resources/utils';
+import { getBestTimeToContact, getDateFromTimestamp, getGender, getGroupRiskTreated } from '../../../resources/utils';
 import './style.css';
 
 interface ModalProps {
@@ -70,7 +70,7 @@ const ModalDetailsPerson: FC<ModalProps> = ({ handleClose, person }) => {
                         Melhor horário para contato
                     </div>
                     <div className="ItemDetails">
-                        {person.horario_contato}
+                        {getBestTimeToContact(person.horario_contato)}
                     </div>
 
                     <div className="TitleItem">

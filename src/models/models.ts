@@ -21,7 +21,7 @@ interface Person {
     nascimento: string;
     email?: string;
     genero: string;
-    horario_contato?: string;
+    horario_contato: string;
     observacoes?: string;
     UBS: string;
     grupo_risco: string;

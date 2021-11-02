@@ -22,3 +22,7 @@ export function getDateFromTimestamp(timestamp: string) {
 
     return `${dayTreated}/${monthTreated}/${year}`
 }
+
+export function getBestTimeToContact(charBestTime: String) {
+    return charBestTime === "T" ? "Tarde" : "Manhã"
+}
