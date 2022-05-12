@@ -1,5 +1,5 @@
 
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { GroupRisk, Person, PersonToSave, UBS } from '../models/models'
 require('dotenv').config()
 
@@ -26,7 +26,7 @@ export interface RequestResponse<T> {
 }
 
 const request = axios.create({
-    baseURL: process.env.REACT_APP_API,
+    baseURL: process.env.NODE_ENV && process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : process.env.REACT_APP_API,
     timeout: 5000,
 })
 
@@ -41,8 +41,52 @@ async function getGroupRiskAndUBSs(): Promise<RequestResponse<GroupRiskAndUBSsRe
     } catch (error: any) {
         console.log('API ERR', error)
 
+        const response = error.response
         return {
-            status: error.response.status
+            status: response ? response.status :  500
+        }
+    }
+}
+
+async function getUBSs(includesADM: boolean): Promise<RequestResponse<UBS[]>> {
+    try {
+        const { data, status } = await request.get<UBS[]>('/getUBSs', {
+            params: {
+                includesADM
+            }
+        })
+
+        return {
+            data,
+            status
+        }
+    } catch (error: any) {
+        console.log('API ERR', error)
+
+        const response = error.response
+        return {
+            status: response ? response.status :  500
+        }
+    }
+}
+
+async function login(id_ubs: string, password: string): Promise<RequestResponse<UBS>> {
+    try {
+        const { data, status }: AxiosResponse<UBS> = await request.post('/login', {
+            id_ubs,
+            password
+        })
+
+        return {
+            data,
+            status
+        }
+    } catch(error: any) {
+        console.log('API ERR', error)
+
+        const response = error.response
+        return {
+            status: response ? response.status :  500
         }
     }
 }
@@ -57,8 +101,9 @@ async function savePerson(person: PersonToSave): Promise<RequestResponse<string>
     } catch (error: any) {
         console.log('API ERR', error)
 
+        const response = error.response
         return {
-            status: error.response.status
+            status: response ? response.status :  500
         }
     }
 }
@@ -84,8 +129,9 @@ async function getPeople(max: number, current_page: number, search?: string, UBS
     } catch (error: any) {
         console.log('API ERR', error)
 
+        const response = error.response
         return {
-            status: error.response.status
+            status: response ? response.status :  500
         }
     }
 }
@@ -94,5 +140,7 @@ async function getPeople(max: number, current_page: number, search?: string, UBS
 export {
     getGroupRiskAndUBSs,
     savePerson,
-    getPeople
+    getPeople,
+    getUBSs,
+    login
 }

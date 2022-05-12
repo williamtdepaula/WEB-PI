@@ -1,0 +1,11 @@
+.ContainerError {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h3 {
+    font-weight: normal;
+    color: #53C0D8;
+}

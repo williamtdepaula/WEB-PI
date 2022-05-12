@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment, RefObject, useImperativeHandle, useState } from 'react'
+import React, { CSSProperties, forwardRef, HTMLInputTypeAttribute, RefObject, useImperativeHandle, useState } from 'react'
 import "./style.css"
 
 export interface ItemFormRef {
@@ -15,16 +15,18 @@ export function validateAll(itemsToValidate: RefObject<ItemFormRef>[]){
 
 interface TextInputProps {
     title: string;
+    titleStyle?: CSSProperties;
+    type?: HTMLInputTypeAttribute;
     value: string;
     isValid: boolean;
     maxLength?: number;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
     placeholder?: string;
     errorMessage?: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TextInput = forwardRef<ItemFormRef, TextInputProps>(({ title, value, placeholder, isValid, maxLength = 500, errorMessage, style, onChange }, ref) => {
+const TextInput = forwardRef<ItemFormRef, TextInputProps>(({ title, type, titleStyle, value, placeholder, isValid, maxLength = 500, errorMessage, style, onChange }, ref) => {
 
     const [showError, setShowError] = useState<boolean>(false)
 
@@ -43,20 +45,20 @@ const TextInput = forwardRef<ItemFormRef, TextInputProps>(({ title, value, place
     }
 
     return (
-        <Fragment>
-            <div className="Title">{title}</div>
+        <div className='containerInput' style={style}>
+            <div className="Title" style={titleStyle}>{title}</div>
             <input
+                type={type}
                 value={value}
                 maxLength={maxLength}
                 onChange={onChangeValue}
                 className={showError ? "InputError" : "Input"}
-                style={style}
                 placeholder={placeholder}
             />
             {showError &&
                 <div className='MessageError'>{errorMessage}</div>
             }
-        </Fragment>
+        </div>
     )
 })
 

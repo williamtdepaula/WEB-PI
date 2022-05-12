@@ -4,12 +4,15 @@ import {
   Route,
 } from "react-router-dom";
 import ListPeople from './pages/list_people';
+import LoginPage from './pages/login';
+import './resources/styles.css'
 
 function App() {
   return (
     <Router>
         <Route component={Register}  path="/" exact />
         <Route component={ListPeople}  path="/relatorio" />
+        <Route component={LoginPage}  path="/login" />
     </Router>
   );
 }

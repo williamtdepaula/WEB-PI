@@ -8,6 +8,12 @@ interface ModalProps {
   message: string;
 }
 
+export interface ModalSkull {
+  show: boolean;
+  title?: string;
+  message?: string;
+}
+
 const Modal: FC<ModalProps> = ({ handleClose, show, title, message }) => {
   const showHideClassName = show ? "modal display-block" : "modal display-none";
 

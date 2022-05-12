@@ -16,6 +16,8 @@ import { addressIsValid, CPFIsValid, emailIsValid, nameIsValid, phoneIsValid } f
 import { getGroupRiskAndUBSs, savePerson } from '../../sevices/requests';
 
 import './style.css';
+import Box from '../../components/Box';
+import ErrorPage from '../../components/error_page';
 
 function Register() {
     const nameRef = useRef<ItemFormRef>(null)
@@ -44,28 +46,34 @@ function Register() {
     const [optionsGroupRisk, setOptionsGroupRisk] = useState<OptionCheckbox[]>([]);
     const [status, setStatus] = useState<{ success: boolean, message: string } | null>(null);
     const [saving, setSaving] = useState<boolean>(false);
+    const [errorServer, setErrorServer] = useState<boolean>(false);
 
     useEffect(() => {
         fetchData();
     }, [])
 
     async function fetchData() {
+        setErrorServer(false)
         setLoading(true)
-        const { data } = await getGroupRiskAndUBSs();
+        const { data, status } = await getGroupRiskAndUBSs();
 
-        if (data) {
-            const optionsUBSTreated = data.UBSs.map(UBS => {
-                return { value: UBS.idUBS.toString(), label: UBS.nome }
-            })
-            const optionsGroupRiskTreated = data.grupo_de_risco.map(group => {
-                return { value: group.idGrupoRisco.toString(), label: group.descricao }
-            })
-            setOptionsUBS(optionsUBSTreated)
-            setOptionsGroupRisk(optionsGroupRiskTreated)
+        if (status === 200){
+            if (data) {
+                const optionsUBSTreated = data.UBSs.map(UBS => {
+                    return { value: UBS.idUBS.toString(), label: UBS.nome }
+                })
+                const optionsGroupRiskTreated = data.grupo_de_risco.map(group => {
+                    return { value: group.idGrupoRisco.toString(), label: group.descricao }
+                })
+                setOptionsUBS(optionsUBSTreated)
+                setOptionsGroupRisk(optionsGroupRiskTreated)
 
-            if (optionsUBSTreated.length > 0 && optionsUBSTreated.length > 0) {
-                setUBS(optionsUBSTreated[0].value)
+                if (optionsUBSTreated.length > 0 && optionsUBSTreated.length > 0) {
+                    setUBS(optionsUBSTreated[0].value)
+                }
             }
+        } else {
+            setErrorServer(true)
         }
 
         setLoading(false)
@@ -112,171 +120,181 @@ function Register() {
         setStatus(null)
     }
 
+    function onPressTryAgain() {
+        fetchData()
+    }
+
     return (
         <BasePage>
 
-            {loading
+            {errorServer 
                 ?
-                <div><Loading color='blue' style={{height: 100}}/></div>
-                :
-                <BaseContent>
-                    <Modal
-                        handleClose={onCloseModal}
-                        show={status !== null}
-                        title={status?.success ? "Sucesso" : "Ops! Algo deu errado"}
-                        message={status?.message ?? ''}
+                    <ErrorPage
+                        onPressTryAgain={onPressTryAgain}
                     />
-                    <div className="ContainerForm">
-                        <TextInput
-                            ref={nameRef}
-                            isValid={nameIsValid(nome)}
-                            title="Nome completo"
-                            value={nome}
-                            onChange={({ target }) => setNome(target.value)}
-                            style={{ width: "100%" }}
-                            errorMessage='Esse campo é obrigatório'
-                            placeholder='Digite seu nome'
-                            maxLength={60}
+                : 
+                    loading
+                    ?
+                    <div><Loading color='blue' style={{height: 100}}/></div>
+                    :
+                    <BaseContent>
+                        <Modal
+                            handleClose={onCloseModal}
+                            show={status !== null}
+                            title={status?.success ? "Sucesso" : "Ops! Algo deu errado"}
+                            message={status?.message ?? ''}
                         />
-                        <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySide">
-                                <TextInput
-                                    ref={emailRef}
-                                    isValid={emailIsValid(email)}
-                                    title="E-mail"
-                                    placeholder='Digite seu e-mail'
-                                    value={email}
-                                    errorMessage={
-                                        email.length === 0
-                                            ?
-                                            "Esse campo é obrigatório"
-                                            :
-                                            "E-mail inválido"
-                                    }
-                                    style={{ width: "100%" }}
-                                    onChange={({ target }) => setEmail(target.value)}
-                                    maxLength={60}
-                                />
+                        <Box>
+                            <TextInput
+                                ref={nameRef}
+                                isValid={nameIsValid(nome)}
+                                title="Nome completo"
+                                value={nome}
+                                onChange={({ target }) => setNome(target.value)}
+                                style={{ width: "100%" }}
+                                errorMessage='Esse campo é obrigatório'
+                                placeholder='Digite seu nome'
+                                maxLength={60}
+                            />
+                            <div className="ContainerItemsSideBySide">
+                                <div className="ItemSideBySide">
+                                    <TextInput
+                                        ref={emailRef}
+                                        isValid={emailIsValid(email)}
+                                        title="E-mail"
+                                        placeholder='Digite seu e-mail'
+                                        value={email}
+                                        errorMessage={
+                                            email.length === 0
+                                                ?
+                                                "Esse campo é obrigatório"
+                                                :
+                                                "E-mail inválido"
+                                        }
+                                        style={{ width: "100%" }}
+                                        onChange={({ target }) => setEmail(target.value)}
+                                        maxLength={60}
+                                    />
+                                </div>
+                                <span style={{ marginLeft: 20 }} />
+                                <div className="ItemSideBySide">
+                                    <TextInput
+                                        ref={CPFRef}
+                                        isValid={CPFIsValid(CPF)}
+                                        title="CPF"
+                                        placeholder='Digite seu CPF'
+                                        value={maskCpf(CPF)}
+                                        maxLength={14}
+                                        errorMessage={
+                                            CPF.length === 0
+                                                ?
+                                                "Esse campo é obrigatório"
+                                                :
+                                                "CPF inválido"
+                                        }
+                                        style={{ width: "100%" }}
+                                        onChange={({ target }) => setCPF(target.value)}
+                                    />
+                                </div>
                             </div>
-                            <span style={{ marginLeft: 20 }} />
-                            <div className="ItemSideBySide">
-                                <TextInput
-                                    ref={CPFRef}
-                                    isValid={CPFIsValid(CPF)}
-                                    title="CPF"
-                                    placeholder='Digite seu CPF'
-                                    value={maskCpf(CPF)}
-                                    maxLength={14}
-                                    errorMessage={
-                                        CPF.length === 0
-                                            ?
-                                            "Esse campo é obrigatório"
-                                            :
-                                            "CPF inválido"
-                                    }
-                                    style={{ width: "100%" }}
-                                    onChange={({ target }) => setCPF(target.value)}
-                                />
-                            </div>
-                        </div>
 
-                        <TextInput
-                            ref={addressRef}
-                            isValid={addressIsValid(address)}
-                            title="Endereço"
-                            placeholder='Nº, Rua, Bairro'
-                            errorMessage='Esse campo é obrigatório'
-                            value={address}
-                            style={{ width: "100%" }}
-                            onChange={({ target }) => setAddress(target.value)}
-                            maxLength={200}
-                        />
+                            <TextInput
+                                ref={addressRef}
+                                isValid={addressIsValid(address)}
+                                title="Endereço"
+                                placeholder='Nº, Rua, Bairro'
+                                errorMessage='Esse campo é obrigatório'
+                                value={address}
+                                style={{ width: "100%" }}
+                                onChange={({ target }) => setAddress(target.value)}
+                                maxLength={200}
+                            />
 
-                        <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySide">
-                                <TextInput
-                                    ref={phoneRef}
-                                    isValid={phoneIsValid(phone)}
-                                    title='Telefone'
-                                    value={phoneMask(phone)}
-                                    maxLength={15}
-                                    placeholder='(11) 12345-6789'
-                                    errorMessage={
-                                        phone.length === 0
-                                            ?
-                                            "Esse campo é obrigatório"
-                                            :
-                                            "Número de telefone inválido"
-                                    }
-                                    style={{ width: "100%" }}
-                                    onChange={({ target }) => setPhone(target.value)}
-                                />
+                            <div className="ContainerItemsSideBySide">
+                                <div className="ItemSideBySide">
+                                    <TextInput
+                                        ref={phoneRef}
+                                        isValid={phoneIsValid(phone)}
+                                        title='Telefone'
+                                        value={phoneMask(phone)}
+                                        maxLength={15}
+                                        placeholder='(11) 12345-6789'
+                                        errorMessage={
+                                            phone.length === 0
+                                                ?
+                                                "Esse campo é obrigatório"
+                                                :
+                                                "Número de telefone inválido"
+                                        }
+                                        style={{ width: "100%" }}
+                                        onChange={({ target }) => setPhone(target.value)}
+                                    />
+                                </div>
+                                <span style={{ marginLeft: 20 }} />
+                                <div className="ItemSideBySide">
+                                    <DatePicker
+                                        title="Data de nascimento"
+                                        onSelectDate={setBirthDate}
+                                    />
+                                </div>
+                                <span style={{ marginLeft: 20 }} />
+                                <div className="ItemRadioSideBySide">
+                                    <RadioCollection
+                                        nameCollection='radio_gender'
+                                        title='Gênero'
+                                        items={[
+                                            { title: "Masculino", value: "M" },
+                                            { title: "Feminino", value: "F" },
+                                            { title: "Prefiro não dizer", value: "N" },
+                                        ]}
+                                        onChangeOption={setGender}
+                                    />
+                                </div>
                             </div>
-                            <span style={{ marginLeft: 20 }} />
-                            <div className="ItemSideBySide">
-                                <DatePicker
-                                    title="Data de nascimento"
-                                    onSelectDate={setBirthDate}
-                                />
-                            </div>
-                            <span style={{ marginLeft: 20 }} />
-                            <div className="ItemRadioSideBySide">
-                                <RadioCollection
-                                    nameCollection='radio_gender'
-                                    title='Gênero'
-                                    items={[
-                                        { title: "Masculino", value: "M" },
-                                        { title: "Feminino", value: "F" },
-                                        { title: "Prefiro não dizer", value: "N" },
-                                    ]}
-                                    onChangeOption={setGender}
-                                />
-                            </div>
-                        </div>
 
-                        <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySide" style={{ flex: 1 }}>
-                                <DropDownPicker
-                                    title='UBS mais próxima'
-                                    options={optionsUBS}
-                                    onSelect={setUBS}
-                                />
+                            <div className="ContainerItemsSideBySide">
+                                <div className="ItemSideBySide" style={{ flex: 1 }}>
+                                    <DropDownPicker
+                                        title='UBS mais próxima'
+                                        options={optionsUBS}
+                                        onSelect={setUBS}
+                                    />
+                                </div>
+                                <div className="ItemRadioSideBySide" style={{ flex: 1, marginLeft: isResponsive ? 0 : 40 }}>
+                                    <RadioCollection
+                                        nameCollection='radio_time_contact'
+                                        title='Melhor horário para contato'
+                                        items={[
+                                            { title: "Manhã", value: "M" },
+                                            { title: "Tarde", value: "T" },
+                                        ]}
+                                        onChangeOption={setBestTimeToContact}
+                                    />
+                                </div>
                             </div>
-                            <div className="ItemRadioSideBySide" style={{ flex: 1, marginLeft: isResponsive ? 0 : 40 }}>
-                                <RadioCollection
-                                    nameCollection='radio_time_contact'
-                                    title='Melhor horário para contato'
-                                    items={[
-                                        { title: "Manhã", value: "M" },
-                                        { title: "Tarde", value: "T" },
-                                    ]}
-                                    onChangeOption={setBestTimeToContact}
-                                />
-                            </div>
-                        </div>
 
-                        <div className="ContainerItemsSideBySide">
-                            <div className="ItemSideBySide">
-                                <CheckboxCollection
-                                    title='Situação da sua saúde'
-                                    items={optionsGroupRisk.filter(item => item.value !== '1')}
-                                    onChange={setGroupRisk}
-                                />
+                            <div className="ContainerItemsSideBySide">
+                                <div className="ItemSideBySide">
+                                    <CheckboxCollection
+                                        title='Situação da sua saúde'
+                                        items={optionsGroupRisk.filter(item => item.value !== '1')}
+                                        onChange={setGroupRisk}
+                                    />
+                                </div>
+                                <div className="ItemSideBySide" style={{ flex: 2 }}>
+                                    <TextInputMultiline
+                                        title="Observações"
+                                        placeholder='Digite algo...'
+                                        value={obs}
+                                        style={{ width: "100%", height: 140 }}
+                                        onChange={({ target }) => setObs(target.value)}
+                                        maxLength={300}
+                                    />
+                                </div>
                             </div>
-                            <div className="ItemSideBySide" style={{ flex: 2 }}>
-                                <TextInputMultiline
-                                    title="Observações"
-                                    placeholder='Digite algo...'
-                                    value={obs}
-                                    style={{ width: "100%", height: 140 }}
-                                    onChange={({ target }) => setObs(target.value)}
-                                    maxLength={300}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <Button title='Salvar' onClick={onSave} loading={saving} />
-                </BaseContent>
+                        </Box>
+                        <Button title='Salvar' onClick={onSave} loading={saving} />
+                    </BaseContent>
             }
 
         </BasePage>

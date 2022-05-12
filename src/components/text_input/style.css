@@ -1,3 +1,9 @@
+.containerInput {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    justify-content: flex-start;
+}
 .Title{
     font-size: 16px;
     font-weight: bold;
@@ -5,7 +11,7 @@
     margin-bottom: 10px;
 }
 .Input {
-    width: 70%;
+    width: 99%;
     height: 35px;
     border-radius: 5px;
     outline-color: #5398D8;
@@ -14,7 +20,7 @@
     resize: none;
 }
 .InputError {
-    width: 70%;
+    width: 99%;
     height: 35px;
     border-radius: 5px;
     outline-color: #eb4034;
@@ -23,6 +29,7 @@
 }
 
 .MessageError {
+    width: 100%;
     margin-top: 5px;
     color: #eb4034;
 }

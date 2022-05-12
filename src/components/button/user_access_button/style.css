@@ -1,0 +1,10 @@
+.ContainerUserAccessButton {
+    margin-right: 100px;
+    cursor: pointer;
+}
+
+span {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
