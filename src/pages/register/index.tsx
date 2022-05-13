@@ -27,7 +27,7 @@ function Register() {
     const phoneRef = useRef<ItemFormRef>(null)
 
     const isResponsive = useSmallScreen()
-
+    
     const [nome, setNome] = useState<string>("")
     const [email, setEmail] = useState<string>("")
     const [CPF, setCPF] = useState<string>("")
@@ -47,10 +47,6 @@ function Register() {
     const [status, setStatus] = useState<{ success: boolean, message: string } | null>(null);
     const [saving, setSaving] = useState<boolean>(false);
     const [errorServer, setErrorServer] = useState<boolean>(false);
-
-    useEffect(() => {
-        fetchData();
-    }, [])
 
     async function fetchData() {
         setErrorServer(false)

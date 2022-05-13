@@ -12,6 +12,8 @@ import { getGender, getGroupRiskTreated } from "../../resources/utils"
 import { getGroupRiskAndUBSs, getPeople } from "../../sevices/requests"
 import './style.css'
 import EmptyAnimation from "../../components/animations/empty/empty"
+import { useAuth } from "../../resources/contexts"
+import NeedLogin from "../../components/need_login"
 
 let search: string | undefined = undefined;
 let optionsUBSsSelected: string[] | undefined = undefined;
@@ -35,6 +37,8 @@ const optionsGender: OptionDropDownMulti[] = [
 
 const ListPeople = () => {
 
+    const {isAuthenticated, isADM, idUBS} = useAuth()
+
     const [people, setPeople] = useState<Person[]>([]);
     const [personSelectedToShow, setPersonSelectedToShow] = useState<Person | null>(null);
     const [showButtonLoadMore, setShowButtonLoadMore] = useState<boolean>(false);
@@ -45,7 +49,7 @@ const ListPeople = () => {
 
     useEffect(() => {
         fetchData(true)
-    }, [])
+    }, [isADM])
 
     async function fetchData(firstTime: boolean = false, reset: boolean = false) {
         if (reset) setPeople([])
@@ -53,11 +57,15 @@ const ListPeople = () => {
         let currentPageToFetch = reset ? 1 : currentPage
 
         setLoading(true)
+
+
+        const listUBSSelected = (isADM || !idUBS) ? optionsUBSsSelected : [idUBS.toString()]
+
         const { status, data: response } = await getPeople(
             20,
             currentPageToFetch,
             search,
-            optionsUBSsSelected,
+            listUBSSelected,
             optionsGroupRiskSelected,
             optionsGenderSelected
         );
@@ -157,31 +165,39 @@ const ListPeople = () => {
 
     return (
         <BasePage>
-            <BaseContent>
-                {personSelectedToShow &&
-                    <ModalDetailsPerson
-                        handleClose={() => setPersonSelectedToShow(null)}
-                        person={personSelectedToShow}
-                    />
-                }
+         {!isAuthenticated
+            ?
+                <NeedLogin/>
+            :
+                <BaseContent>
+                    {personSelectedToShow &&
+                        <ModalDetailsPerson
+                            handleClose={() => setPersonSelectedToShow(null)}
+                            person={personSelectedToShow}
+                        />
+                    }
 
-                <SearchInput onSearch={onSearch} />
+                    <SearchInput onSearch={onSearch} />
 
-                {optionsUBS.length > 0 && optionsGroupRisk.length > 0 &&
                     <div className='ContainerItemsSideBySide'>
-                        <DropdownMultiSelect
-                            name='ubss'
-                            title='UBSs'
-                            options={optionsUBS}
-                            onSelectOptions={onChangeUBSsFilter}
-                        />
 
-                        <DropdownMultiSelect
-                            name='groups_risk'
-                            title='Grupos de risco'
-                            options={optionsGroupRisk}
-                            onSelectOptions={onChangeGruposRiscoFilter}
-                        />
+                        {isADM && optionsUBS.length > 0 && 
+                            <DropdownMultiSelect
+                                name='ubss'
+                                title='UBSs'
+                                options={optionsUBS}
+                                onSelectOptions={onChangeUBSsFilter}
+                            />
+                        }
+
+                        {optionsGroupRisk.length > 0 && 
+                            <DropdownMultiSelect
+                                name='groups_risk'
+                                title='Grupos de risco'
+                                options={optionsGroupRisk}
+                                onSelectOptions={onChangeGruposRiscoFilter}
+                            />
+                        }
 
                         <DropdownMultiSelect
                             name='genders'
@@ -190,50 +206,51 @@ const ListPeople = () => {
                             onSelectOptions={onChangeGendersFilter}
                         />
                     </div>
-                }
 
-                {loading && people.length === 0 &&
-                    <Loading color='blue' style={{ height: 80 }} />
-                }
-                {!loading && people.length === 0 &&
-                    <EmptyAnimation
-                        text='Ops! Não encontramos nada, tente novamente mais tarde'
-                    />
-                }
+                    {loading && people.length === 0 &&
+                        <Loading color='blue' style={{ height: 80 }} />
+                    }
+                    {!loading && people.length === 0 &&
+                        <EmptyAnimation
+                            text='Ops! Não encontramos nada, tente novamente mais tarde'
+                        />
+                    }
 
-                {people.length > 0 &&
-                    <Fragment>
-                        <div style={{ width: '100%', overflowX: 'auto', overflowWrap: 'inherit' }}>
+                    {people.length > 0 &&
+                        <Fragment>
+                            <div style={{ width: '100%', overflowX: 'auto', overflowWrap: 'inherit' }}>
 
-                            <div className='HeaderTable'>
-                                <div className='ItemHeaderTable'>
-                                    Nome
+                                <div className='HeaderTable'>
+                                    <div className='ItemHeaderTable'>
+                                        Nome
+                                    </div>
+                                    <div className='ItemHeaderTable'>
+                                        CPF
+                                    </div>
+                                    <div className='ItemHeaderTable'>
+                                        Gênero
+                                    </div>
+                                    <div className='ItemHeaderTable'>
+                                        Grupo de Risco
+                                    </div>
+                                    <div className='ItemHeaderTable'>
+                                        UBS
+                                    </div>
                                 </div>
-                                <div className='ItemHeaderTable'>
-                                    CPF
-                                </div>
-                                <div className='ItemHeaderTable'>
-                                    Gênero
-                                </div>
-                                <div className='ItemHeaderTable'>
-                                    Grupo de Risco
-                                </div>
-                                <div className='ItemHeaderTable'>
-                                    UBS
-                                </div>
+                                {renderLine()}
                             </div>
-                            {renderLine()}
-                        </div>
-                        {showButtonLoadMore &&
-                            <LinkButton
-                                title='Mostrar Mais'
-                                onClick={() => fetchData(false, false)}
-                                loading={loading}
-                            />
-                        }
-                    </Fragment>
-                }
-            </BaseContent>
+                            {showButtonLoadMore &&
+                                <LinkButton
+                                    title='Mostrar Mais'
+                                    onClick={() => fetchData(false, false)}
+                                    loading={loading}
+                                />
+                            }
+                        </Fragment>
+                    }
+                </BaseContent>
+         }
+            
         </BasePage>
     )
 }

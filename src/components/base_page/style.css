@@ -10,6 +10,13 @@
     justify-content: space-between;
     display: flex;
 }
+
+@media screen and (max-width: 769px) {
+    .Header {
+        justify-content: flex-end;
+    }
+}
+
 h4 {
     color: white;
     font-weight: bold;

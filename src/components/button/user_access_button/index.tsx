@@ -1,16 +1,16 @@
 import { FC } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../../resources/contexts';
 import './style.css'
 
 const UserAccessButton: FC = () => {
     const {isAuthenticated, name, logout} = useAuth()
 
-    const history = useHistory()
-
     function onPressAccess() {
-        
         window.location.pathname = '/login'
+    }
+
+    async function onPressToOpenList() {
+      if(window.location.pathname !== '/relatorio') window.location.pathname = '/relatorio'
     }
 
     async function onPressLogout() {
@@ -23,7 +23,15 @@ const UserAccessButton: FC = () => {
                 ?
                     <span onClick={onPressAccess}>ACESSAR</span>
                 :
-                    <span onClick={onPressLogout}>{name}</span>
+                <div>
+                    <span onClick={onPressToOpenList}>RELATÓRIO</span>
+                    <div className="dropdown">
+                        <span className="dropbtn">{name}</span>
+                        <div className="dropdown-content">
+                            <div className='item-dropdown' onClick={onPressLogout} >sair</div>
+                        </div>
+                    </div>
+                </div>
             }
         </div>
     );

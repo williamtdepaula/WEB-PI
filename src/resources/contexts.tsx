@@ -40,7 +40,6 @@ export const AuthProvider: FC = ({children}) => {
   const [statusCodeLogin, setStatusCodeLogin] = useState<number | null>(null);
 
   useEffect(() => {
-    console.log("AQUIIII")
     loadUserFromCookies()
   }, []);
 
@@ -50,7 +49,6 @@ export const AuthProvider: FC = ({children}) => {
     const storedCNES = localStorage.getItem('userCNES');
     const storedIsADM = localStorage.getItem('userIsADM');
     
-    console.log("AQUIIII1234", storedIdUBS)
     if (storedIdUBS && storedName && storedCNES && storedIsADM) {
       setName(storedName);
       setIdUBS(parseInt(storedIdUBS));
@@ -62,9 +60,11 @@ export const AuthProvider: FC = ({children}) => {
   }
 
   const loginUBS = async (UBS: string, password: string) => {
+    setStatusCodeLogin(null)
     setLoading(true)
     const {data, status} = await login(UBS, password)
 
+    console.log("data", {data, status})
     setStatusCodeLogin(status)
 
     if (status === 200 && data) {

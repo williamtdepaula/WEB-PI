@@ -18,7 +18,7 @@ function LoginPage() {
 
     const history = useHistory()
 
-    const {login, loading: loadingLogin, statusCodeLogin} = useAuth()
+    const {login, loading: loadingLogin, statusCodeLogin, isAuthenticated} = useAuth()
     const isMobile = useSmallScreen()
 
     const [optionsUBSsDropdown, setOptionsUBSsDropdown] = useState<Option[]>([])
@@ -29,8 +29,12 @@ function LoginPage() {
     const [errorServer, setErrorServer] = useState<boolean>(false);
 
     useEffect(() => {
-        getUBSsToDropdown()
-    }, [])
+        if (isAuthenticated) {
+            history.replace('/relatorio')
+        } else {
+            getUBSsToDropdown()
+        }
+    }, [isAuthenticated])
 
     useEffect(() => {
         treatLoginStatusCode()
@@ -99,7 +103,7 @@ function LoginPage() {
                         ?
                             <Loading color='blue' style={{height: 100}}/>
                         :
-                            <Box styles={{width: isMobile ? '100%' : 450, backgroundColor: isMobile ? 'transparent' : undefined}}>
+                            <Box styles={{ width: isMobile ? '100%' : 450, backgroundColor: isMobile ? 'transparent' : undefined}}>
                                 <h3>CADASTRO ACELERADO DE SAÚDE</h3>
 
                                 <div className='container-form'>

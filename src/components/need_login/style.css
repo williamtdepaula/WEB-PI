@@ -1,0 +1,12 @@
+.ContainerNeedLogin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+p {
+    font-weight: normal;
+    color: #53C0D8;
+    text-align: center;
+}
