@@ -6,10 +6,10 @@
 }
 
 .ItemRadioSideBySide {
-    flex: 2;
+    flex: 0.45;
 }
 
-@media screen and (max-width: 769px) {
+@media screen and (max-width: 930px) {
     .ContainerForm {
         background-color: transparent;
         padding: 0px

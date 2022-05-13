@@ -4,7 +4,7 @@ export const useSmallScreen = () => {
     const [smallScreen, setSmallScreen] = useState<boolean>(false);
 
     useEffect(() => {
-        const mediaQuery = window.matchMedia('(max-width: 768px)');
+        const mediaQuery = window.matchMedia('(max-width: 930px)');
         const listener = (e: any) => {
             if (e.matches) {
                 setSmallScreen(true);

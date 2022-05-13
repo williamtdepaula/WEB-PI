@@ -9,7 +9,7 @@ span {
     font-weight: bold;
 }
 
-@media screen and (max-width: 769px) {
+@media screen and (max-width: 930px) {
     .ContainerUserAccessButton {
         margin-right: 10px;
         cursor: pointer;

@@ -1,4 +1,5 @@
 import React, { CSSProperties, forwardRef, HTMLInputTypeAttribute, RefObject, useImperativeHandle, useState } from 'react'
+import { useApplication } from '../../resources/contexts/ApplicationContext';
 import "./style.css"
 
 export interface ItemFormRef {
@@ -28,6 +29,8 @@ interface TextInputProps {
 
 const TextInput = forwardRef<ItemFormRef, TextInputProps>(({ title, type, titleStyle, value, placeholder, isValid, maxLength = 500, errorMessage, style, onChange }, ref) => {
 
+    const {pixelsToAdd} = useApplication()
+
     const [showError, setShowError] = useState<boolean>(false)
 
     useImperativeHandle(ref, () => {
@@ -46,7 +49,7 @@ const TextInput = forwardRef<ItemFormRef, TextInputProps>(({ title, type, titleS
 
     return (
         <div className='containerInput' style={style}>
-            <div className="Title" style={titleStyle}>{title}</div>
+            <div className="Title" style={{...titleStyle, fontSize: 16 + pixelsToAdd}}>{title}</div>
             <input
                 type={type}
                 value={value}
@@ -54,9 +57,10 @@ const TextInput = forwardRef<ItemFormRef, TextInputProps>(({ title, type, titleS
                 onChange={onChangeValue}
                 className={showError ? "InputError" : "Input"}
                 placeholder={placeholder}
+                style={{height: 30 + pixelsToAdd, fontSize: 16 + pixelsToAdd}}
             />
             {showError &&
-                <div className='MessageError'>{errorMessage}</div>
+                <div className='MessageError' style={{fontSize: 16 + pixelsToAdd}}>{errorMessage}</div>
             }
         </div>
     )

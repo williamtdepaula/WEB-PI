@@ -59,7 +59,7 @@
     font-size: 14px;
   }
   
-  @media screen and (max-width: 769px) {
+  @media screen and (max-width: 930px) {
     .modal-main{
       width: 80%;
     }

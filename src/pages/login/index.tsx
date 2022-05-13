@@ -10,7 +10,7 @@ import { getUBSs } from '../../sevices/requests';
 import {useSmallScreen} from '../../resources/hooks';
 
 import './style.css';
-import { useAuth } from '../../resources/contexts';
+import { useAuth } from '../../resources/contexts/AuthContext';
 import { useHistory } from 'react-router-dom';
 
 function LoginPage() {
@@ -27,6 +27,10 @@ function LoginPage() {
     const [loading, setLoading] = useState<boolean>(true)
     const [showModalError, setShowModalError] = useState<ModalSkull>({ show: false })
     const [errorServer, setErrorServer] = useState<boolean>(false);
+
+    useEffect(() => {
+        document.title = 'Login'
+    }, [])
 
     useEffect(() => {
         if (isAuthenticated) {

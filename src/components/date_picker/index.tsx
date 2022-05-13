@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from "react";
+import { useApplication } from "../../resources/contexts/ApplicationContext";
 import './style.css'
 
 interface DatePickerBRProps {
@@ -7,6 +8,8 @@ interface DatePickerBRProps {
 }
 
 const DatePicker: FC<DatePickerBRProps> = ({ title, onSelectDate }) => {
+
+    const {pixelsToAdd} = useApplication()
 
     const [dateSelected, setDateSelected] = useState<string>('1990-01-01')
 
@@ -30,13 +33,14 @@ const DatePicker: FC<DatePickerBRProps> = ({ title, onSelectDate }) => {
 
     return (
         <div className='DatePickerContainer'>
-            {title}
+            <div className="TitleDatePicker" style={{ fontSize: 16 + pixelsToAdd}}>{title}</div>
 
             <input
                 value={dateSelected}
                 type='date'
                 onChange={(v) => setDateSelected(v.target.value)}
                 className={"InputDatePicker"}
+                style={{height: 33 + pixelsToAdd, fontSize: 16 + pixelsToAdd}}
             />
         </div>
     )

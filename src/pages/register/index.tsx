@@ -18,6 +18,7 @@ import { getGroupRiskAndUBSs, savePerson } from '../../sevices/requests';
 import './style.css';
 import Box from '../../components/Box';
 import ErrorPage from '../../components/error_page';
+import AccessibilityFontSize from '../../components/accessibility_font_size';
 
 function Register() {
     const nameRef = useRef<ItemFormRef>(null)
@@ -47,6 +48,11 @@ function Register() {
     const [status, setStatus] = useState<{ success: boolean, message: string } | null>(null);
     const [saving, setSaving] = useState<boolean>(false);
     const [errorServer, setErrorServer] = useState<boolean>(false);
+
+    useEffect(() => {
+        document.title = 'Cadastro'
+        fetchData()
+    }, [])
 
     async function fetchData() {
         setErrorServer(false)
@@ -122,7 +128,7 @@ function Register() {
 
     return (
         <BasePage>
-
+            <AccessibilityFontSize/>
             {errorServer 
                 ?
                     <ErrorPage
@@ -140,7 +146,7 @@ function Register() {
                             title={status?.success ? "Sucesso" : "Ops! Algo deu errado"}
                             message={status?.message ?? ''}
                         />
-                        <Box>
+                        <Box styles={{width: '90%'}}>
                             <TextInput
                                 ref={nameRef}
                                 isValid={nameIsValid(nome)}
@@ -207,6 +213,14 @@ function Register() {
                             />
 
                             <div className="ContainerItemsSideBySide">
+                                <div className="ItemSideBySide" style={{ flex: 1 }}>
+                                    <DropDownPicker
+                                        title='UBS mais próxima'
+                                        options={optionsUBS}
+                                        onSelect={setUBS}
+                                    />
+                                </div>
+                                <span style={{ marginLeft: 20 }} />
                                 <div className="ItemSideBySide">
                                     <TextInput
                                         ref={phoneRef}
@@ -233,7 +247,9 @@ function Register() {
                                         onSelectDate={setBirthDate}
                                     />
                                 </div>
-                                <span style={{ marginLeft: 20 }} />
+                            </div>
+
+                            <div className="ContainerItemsSideBySide">
                                 <div className="ItemRadioSideBySide">
                                     <RadioCollection
                                         nameCollection='radio_gender'
@@ -244,16 +260,6 @@ function Register() {
                                             { title: "Prefiro não dizer", value: "N" },
                                         ]}
                                         onChangeOption={setGender}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="ContainerItemsSideBySide">
-                                <div className="ItemSideBySide" style={{ flex: 1 }}>
-                                    <DropDownPicker
-                                        title='UBS mais próxima'
-                                        options={optionsUBS}
-                                        onSelect={setUBS}
                                     />
                                 </div>
                                 <div className="ItemRadioSideBySide" style={{ flex: 1, marginLeft: isResponsive ? 0 : 40 }}>

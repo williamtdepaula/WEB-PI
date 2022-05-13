@@ -1,5 +1,5 @@
 import { createContext, FC, useContext, useEffect, useState } from "react";
-import { login } from '../sevices/requests';
+import { login } from '../../sevices/requests';
 
 interface AuthContextData {
   isAuthenticated: boolean;
@@ -64,7 +64,6 @@ export const AuthProvider: FC = ({children}) => {
     setLoading(true)
     const {data, status} = await login(UBS, password)
 
-    console.log("data", {data, status})
     setStatusCodeLogin(status)
 
     if (status === 200 && data) {

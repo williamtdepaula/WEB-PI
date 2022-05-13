@@ -12,7 +12,7 @@ import { getGender, getGroupRiskTreated } from "../../resources/utils"
 import { getGroupRiskAndUBSs, getPeople } from "../../sevices/requests"
 import './style.css'
 import EmptyAnimation from "../../components/animations/empty/empty"
-import { useAuth } from "../../resources/contexts"
+import { useAuth } from "../../resources/contexts/AuthContext"
 import NeedLogin from "../../components/need_login"
 
 let search: string | undefined = undefined;
@@ -46,6 +46,10 @@ const ListPeople = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [optionsUBS, setOptionsUBS] = useState<OptionDropDownMulti[]>([]);
     const [optionsGroupRisk, setOptionsGroupRisk] = useState<OptionDropDownMulti[]>([]);
+
+    useEffect(() => {
+        document.title = 'Relatório'
+    }, [])
 
     useEffect(() => {
         fetchData(true)
@@ -112,7 +116,6 @@ const ListPeople = () => {
 
         setLoading(false)
     }
-
 
     async function onSearch(value: string) {
         search = value;

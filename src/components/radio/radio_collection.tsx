@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { useApplication } from '../../resources/contexts/ApplicationContext';
 import RadioItem from './radio_item';
 import './style_collection.css'
 
@@ -10,6 +11,8 @@ interface RadioCollectionProps {
 }
 
 const RadioCollection: FC<RadioCollectionProps> = ({ nameCollection, title, items, onChangeOption }) => {
+    const {pixelsToAdd} = useApplication()
+
     const [optionSelected, setOptionSelected] = useState<string>(items[0].value)
     
     function onChangeRadio(value: string){
@@ -19,7 +22,7 @@ const RadioCollection: FC<RadioCollectionProps> = ({ nameCollection, title, item
 
     return(
         <div className='ContainerRadioOptions'>
-            {title}
+            <div className="TitleRadioCollection" style={{ fontSize: 16 + pixelsToAdd}}>{title}</div>
             <div className='ItemsRadio'>
                 {items.map((radio, index) => <RadioItem key={index} name={nameCollection} title={radio.title} value={radio.value} isChecked={optionSelected === radio.value} onChange={onChangeRadio} />)}
             </div>

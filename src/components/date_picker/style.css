@@ -11,3 +11,8 @@
     border: 0.5px solid #ababab;
     margin-top: 10px;
 }
+.TitleDatePicker{
+    transition: 0.5s;
+    font-size: 16px;
+    font-weight: bold;
+}

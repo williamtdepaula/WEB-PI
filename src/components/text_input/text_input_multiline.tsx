@@ -1,4 +1,5 @@
 import React, { forwardRef, Fragment, RefObject, useImperativeHandle, useState } from 'react'
+import { useApplication } from '../../resources/contexts/ApplicationContext';
 import "./style.css"
 
 export interface ItemFormRef {
@@ -26,6 +27,8 @@ interface TextInputProps {
 
 const TextInputMultiline = forwardRef<ItemFormRef, TextInputProps>(({ title, value, placeholder, isValid, maxLength = 500, errorMessage, style, onChange }, ref) => {
 
+    const {pixelsToAdd} = useApplication()
+
     const [showError, setShowError] = useState<boolean>(false)
 
     useImperativeHandle(ref, () => {
@@ -47,15 +50,14 @@ const TextInputMultiline = forwardRef<ItemFormRef, TextInputProps>(({ title, val
 
     return (
         <Fragment>
-            <div className="Title">{title}</div>
+            <div className="Title" style={{fontSize: 16 + pixelsToAdd}}>{title}</div>
             <textarea
                 value={value}
                 maxLength={maxLength}
                 onChange={onChangeValue}
                 className={showError ? "InputError" : "Input"}
-                style={style}
                 placeholder={placeholder}
-
+                style={{...style, fontSize: 16 + pixelsToAdd}}
             />
             {showError &&
                 <div className='MessageError'>{errorMessage}</div>

@@ -15,7 +15,7 @@
     background-color: transparent;
 }
 
-@media screen and (max-width: 769px) {
+@media screen and (max-width: 930px) {
     .InputSearch {
         width: calc(100vw - 50px);
     }

@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import CheckboxItem from "./checkbox_item"
 import './checkbox_collection_style.css'
+import { useApplication } from "../../resources/contexts/ApplicationContext";
 
 export interface OptionCheckbox {
     value: string,
@@ -14,6 +15,8 @@ interface CheckboxCollectionProps {
 }
 
 const CheckboxCollection: FC<CheckboxCollectionProps> = ({ title, items, onChange }) => {
+
+    const {pixelsToAdd} = useApplication()
 
     const [optionsSelected, setOptionsSeletected] = useState<string[]>([]);
 
@@ -40,7 +43,8 @@ const CheckboxCollection: FC<CheckboxCollectionProps> = ({ title, items, onChang
 
     return (
         <div className='CollectionCheckboxContainer'>
-            {title}
+            
+            <div className="TitleDatePicker" style={{ fontSize: 16 + pixelsToAdd}}>{title}</div>
             {
                 items.map((item, index) => <CheckboxItem key={index} label={item.label} onChange={() => onPressReason(item.value)} />)
             }

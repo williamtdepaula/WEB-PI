@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useAuth } from '../../../resources/contexts';
+import { useAuth } from '../../../resources/contexts/AuthContext';
 import './style.css'
 
 const UserAccessButton: FC = () => {
