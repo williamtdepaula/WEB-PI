@@ -19,12 +19,15 @@ import './style.css';
 import Box from '../../components/Box';
 import ErrorPage from '../../components/error_page';
 import AccessibilityFontSize from '../../components/accessibility_font_size';
+import { treatAddress } from '../../resources/utils';
 
 function Register() {
     const nameRef = useRef<ItemFormRef>(null)
     const CPFRef = useRef<ItemFormRef>(null)
     const emailRef = useRef<ItemFormRef>(null)
-    const addressRef = useRef<ItemFormRef>(null)
+    const houseNumberRef = useRef<ItemFormRef>(null)
+    const streetRef = useRef<ItemFormRef>(null)
+    const districtRef = useRef<ItemFormRef>(null)
     const phoneRef = useRef<ItemFormRef>(null)
 
     const isResponsive = useSmallScreen()
@@ -34,6 +37,9 @@ function Register() {
     const [CPF, setCPF] = useState<string>("")
     const [obs, setObs] = useState<string>("")
     const [address, setAddress] = useState<string>("")
+    const [houseNumber, setHouseNumber] = useState<string>("")
+    const [street, setStreet] = useState<string>("")
+    const [district, setDistrict] = useState<string>("")
     const [phone, setPhone] = useState<string>("")
     const [gender, setGender] = useState<string>("M")
     const [birthDate, setBirthDate] = useState<string>("")
@@ -92,13 +98,13 @@ function Register() {
     }
 
     async function onSave() {
-        if (validateAll([nameRef, addressRef, emailRef, phoneRef, CPFRef])) {
+        if (validateAll([nameRef, houseNumberRef, streetRef, districtRef, emailRef, phoneRef, CPFRef])) {
             setSaving(true)
             const { status } = await savePerson({
                 nome,
                 email,
                 CPF: maskRemoveAllSpecialCharacters(CPF),
-                endereco: address,
+                endereco: treatAddress(houseNumber, street, district),
                 telefone: maskRemoveAllSpecialCharacters(phone),
                 genero: gender,
                 nascimento: birthDate,
@@ -210,17 +216,46 @@ function Register() {
                                 </div>
                             </div>
 
-                            <TextInput
-                                ref={addressRef}
-                                isValid={addressIsValid(address)}
-                                title="Endereço"
-                                placeholder='Nº, Rua, Bairro'
-                                errorMessage='Esse campo é obrigatório'
-                                value={address}
-                                style={{ width: "100%" }}
-                                onChange={({ target }) => setAddress(target.value)}
-                                maxLength={200}
-                            />
+                            <div className="ContainerItemsSideBySide">
+                                
+                                <TextInput
+                                    ref={houseNumberRef}
+                                    isValid={addressIsValid(houseNumber)}
+                                    title="Número da sua residência"
+                                    placeholder='Número da sua residência'
+                                    errorMessage='Esse campo é obrigatório'
+                                    value={houseNumber}
+                                    style={{ width: "100%" }}
+                                    onChange={({ target }) => setHouseNumber(target.value)}
+                                    maxLength={200}
+                                />
+                                <span style={{ marginLeft: 20 }} />
+                                
+                                <TextInput
+                                    ref={streetRef}
+                                    isValid={addressIsValid(street)}
+                                    title="Rua"
+                                    placeholder='Rua'
+                                    errorMessage='Esse campo é obrigatório'
+                                    value={street}
+                                    style={{ width: "100%" }}
+                                    onChange={({ target }) => setStreet(target.value)}
+                                    maxLength={200}
+                                />
+                                <span style={{ marginLeft: 20 }} />
+                                
+                                <TextInput
+                                    ref={districtRef}
+                                    isValid={addressIsValid(district)}
+                                    title="Bairro"
+                                    placeholder='Bairro'
+                                    errorMessage='Esse campo é obrigatório'
+                                    value={district}
+                                    style={{ width: "100%" }}
+                                    onChange={({ target }) => setDistrict(target.value)}
+                                    maxLength={200}
+                                />
+                            </div>
 
                             <div className="ContainerItemsSideBySide">
                                 <div className="ItemSideBySide" style={{ flex: 1 }}>
