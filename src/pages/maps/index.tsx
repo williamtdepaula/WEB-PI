@@ -2,6 +2,11 @@ import './style.css';
 import BasePage from '../../components/base_page';
 import { DirectionsRenderer, GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useAuth } from '../../resources/contexts/AuthContext';
+import { getUBSByPerson } from '../../sevices/requests';
+import ErrorPage from '../../components/error_page';
+import Loading from '../../components/animations/loading';
 
 const containerStyle = {
     width: '100vw',
@@ -15,39 +20,106 @@ const center = {
 
 function MapsPage() {
 
+    const search = useLocation().search
+    const CPF = new URLSearchParams(search).get('CPF')
+    const person_address = new URLSearchParams(search).get('user_address')
+    const {ubsAddress, isADM} = useAuth()
+
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
         googleMapsApiKey: ""
     })
 
     const [directionResponse, setDirectionResponse] = useState<google.maps.DirectionsResult | null>(null)
-
-    async function getRoute() {
-        const directionService = new google.maps.DirectionsService()
-        const result = await directionService.route({
-            origin: 'Rua José de Anchieta, Jardim Japão, 12',
-            destination: 'Rua São Paulo das Missões, 132 - Tijuco Preto',
-            travelMode: google.maps.TravelMode.DRIVING
-        })
-        setDirectionResponse(result)
-    }
+    const [error, setError] = useState<boolean>(false)
+    const [errorLoadMaps, setErrorLoadMaps] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(true)
 
     useEffect(() => {
-        if (isLoaded) {
-            getRoute()
+        startConfig()
+    }, [isLoaded, CPF, person_address])
+
+    function startConfig(){
+        if (isLoaded && CPF && person_address) {
+            setupConfigsToMapsWorks()
         }
-    }, [isLoaded])
+    }
+
+    async function setupConfigsToMapsWorks(){
+        setError(false)
+        setErrorLoadMaps(false)
+        setLoading(true)
+        if (isADM) await configRouteToADM()
+        else await configRoute()
+        setLoading(false)
+    }
+
+    async function getPersonUBSAddress(): Promise<string | undefined> {
+        if (CPF){
+            const {data, status} = await getUBSByPerson(CPF)
+            if (data && status === 200) {
+                return data?.address
+            } else {
+                setError(true)
+                return undefined
+            }
+        } else return undefined
+    }
+
+    async function configRoute() {
+        if (ubsAddress && person_address){
+            await configRouteInGoogleMaps(ubsAddress, person_address)
+        } else {
+            setError(true)
+        }
+    }
+
+    async function configRouteToADM() {
+
+        const address = await getPersonUBSAddress()
+
+        if (address && person_address){
+            await configRouteInGoogleMaps(address, person_address)
+        } else {
+            setError(true)
+        }
+    }
+
+    async function configRouteInGoogleMaps(pointA: string, pointB: string) {
+        console.log("aq")
+        const directionService = new google.maps.DirectionsService()
+        try {
+            const result = await directionService.route({
+                origin: pointA,
+                destination: pointB,
+                travelMode: google.maps.TravelMode.DRIVING
+            })
+            setDirectionResponse(result)
+        }catch(e) {
+            setErrorLoadMaps(true)
+        }
+    }
 
     return (
         <BasePage>
-            {isLoaded && 
-                <GoogleMap
-                    mapContainerStyle={containerStyle}
-                    center={center}
-                    zoom={10}
-                >
-                    {directionResponse && <DirectionsRenderer directions={directionResponse} />}
-                </GoogleMap>
+            {error || errorLoadMaps
+                ?
+                    <ErrorPage onPressTryAgain={startConfig} description={errorLoadMaps ? 'Não possível carregar esse endereço!' : undefined}/> 
+                : 
+                loading 
+                    ?
+                        <div className='center'><Loading color='blue' style={{height: 100}}/></div>
+                    :
+                        isLoaded && 
+                            <div style={{zIndex: 1}}>
+                                <GoogleMap
+                                    mapContainerStyle={containerStyle}
+                                    center={center}
+                                    zoom={10}
+                                >
+                                    {directionResponse && <DirectionsRenderer directions={directionResponse} />}
+                                </GoogleMap>
+                            </div>
             }
         </BasePage>
     );

@@ -8,6 +8,7 @@ interface UBS {
     CNES: number;
     nome: string;
     isADM: boolean;
+    address?: string;
 }
 
 interface Person {

@@ -70,6 +70,28 @@ async function getUBSs(includesADM: boolean): Promise<RequestResponse<UBS[]>> {
     }
 }
 
+async function getUBSByPerson(cpf: string): Promise<RequestResponse<UBS>> {
+    try {
+        const { data, status } = await request.get<UBS>('/getUBSByPerson', {
+            params: {
+                cpf
+            }
+        })
+
+        return {
+            data,
+            status
+        }
+    } catch (error: any) {
+        console.log('API ERR', error)
+
+        const response = error.response
+        return {
+            status: response ? response.status :  500
+        }
+    }
+}
+
 async function login(id_ubs: string, password: string): Promise<RequestResponse<UBS>> {
     try {
         const { data, status }: AxiosResponse<UBS> = await request.post('/login', {
@@ -142,5 +164,6 @@ export {
     savePerson,
     getPeople,
     getUBSs,
+    getUBSByPerson,
     login
 }

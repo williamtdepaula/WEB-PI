@@ -1,8 +1,10 @@
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { Person } from '../../../models/models';
 import { maskCpf, phoneMask } from '../../../resources/masks';
+import { SiGooglemaps } from 'react-icons/si'
 import { getBestTimeToContact, getDateFromTimestamp, getGender, getGroupRiskTreated } from '../../../resources/utils';
 import './style.css';
+import { useHistory } from 'react-router-dom';
 
 interface ModalProps {
     handleClose: () => void;
@@ -10,6 +12,11 @@ interface ModalProps {
 }
 
 const ModalDetailsPerson: FC<ModalProps> = ({ handleClose, person }) => {
+
+    function openMap() {
+        window.location.href = (`/maps?CPF=${person.CPF}&user_address=${person.endereco}`)
+    }
+
     return (
         <div className={"modal display-block"}>
             <div className="modal-main">
@@ -87,11 +94,21 @@ const ModalDetailsPerson: FC<ModalProps> = ({ handleClose, person }) => {
                         {person.UBS}
                     </div>
 
-                    <div className="TitleItem">
-                        Observações
-                    </div>
-                    <div className="ItemDetails">
-                        {person.observacoes}
+                    {person.observacoes && person.observacoes.length > 0 && 
+                        <Fragment>
+                            <div className="TitleItem">
+                                Observações
+                            </div>
+
+                            <div className="ItemDetails">
+                                {person.observacoes}
+                            </div>
+                        </Fragment>
+                    }
+
+                    <div className='SeeMap' onClick={openMap}>
+                        <SiGooglemaps color='#53C0D8' size={30}/>
+                        Veja no mapa como chegar!
                     </div>
                 </div>
             </div>

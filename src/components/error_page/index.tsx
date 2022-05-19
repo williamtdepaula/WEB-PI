@@ -4,13 +4,14 @@ import './style.css'
 
 interface ErrorPageProps {
     onPressTryAgain: () => void;
+    description?: string;
 }
 
-const ErrorPage: FC<ErrorPageProps> = ({onPressTryAgain}) => {
+const ErrorPage: FC<ErrorPageProps> = ({onPressTryAgain, description}) => {
     return (
         <div className='center'>
             <div className='ContainerError'>
-                <h3>Oops! Algo deu errado</h3>
+                <h3>{description ?? 'Oops! Algo deu errado'}</h3>
                 <Button
                     onClick={onPressTryAgain}
                     title='Tentar novamente'

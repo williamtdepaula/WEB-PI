@@ -36,7 +36,6 @@ function Register() {
     const [email, setEmail] = useState<string>("")
     const [CPF, setCPF] = useState<string>("")
     const [obs, setObs] = useState<string>("")
-    const [address, setAddress] = useState<string>("")
     const [houseNumber, setHouseNumber] = useState<string>("")
     const [street, setStreet] = useState<string>("")
     const [district, setDistrict] = useState<string>("")
@@ -144,7 +143,6 @@ function Register() {
 
     return (
         <BasePage>
-            <AccessibilityFontSize/>
             {errorServer 
                 ?
                     <ErrorPage
@@ -153,9 +151,10 @@ function Register() {
                 : 
                     loading
                     ?
-                    <div><Loading color='blue' style={{height: 100}}/></div>
+                        <div><Loading color='blue' style={{height: 100}}/></div>
                     :
                     <BaseContent>
+                        <AccessibilityFontSize/>
                         <Modal
                             handleClose={onCloseModal}
                             show={status !== null}

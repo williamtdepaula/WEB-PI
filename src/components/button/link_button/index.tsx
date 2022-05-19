@@ -10,11 +10,12 @@ interface LinkButtonProps {
 
 const LinkButton: FC<LinkButtonProps> = ({ onClick, loading, title }) => (
     <div className="LinkButton" onClick={!loading ? onClick : undefined}>
+        {console.log('loading', loading)}
         {loading
             ?
             <Loading color='blue' style={{ height: 50 }} />
             :
-            <span>{title}</span>
+            <p>{title}</p>
         }
     </div>
 )

@@ -9,6 +9,7 @@
     align-items: center;
     justify-content: space-between;
     display: flex;
+    z-index: 9999;
 }
 
 @media screen and (max-width: 930px) {
