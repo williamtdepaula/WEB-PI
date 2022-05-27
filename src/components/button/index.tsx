@@ -10,7 +10,7 @@ interface ButtonProps {
 }
 
 const Button: FC<ButtonProps> = ({ onClick, loading, title, styles }) => (
-    <div className="Button" onClick={!loading ? onClick : undefined} style={{ padding: loading ? 5 : 10, ...styles }}>
+    <div data-testid='button' className="Button" onClick={!loading ? onClick : undefined} style={{ padding: loading ? 5 : 10, ...styles }}>
         {loading
             ?
             <Loading color='white'/>
