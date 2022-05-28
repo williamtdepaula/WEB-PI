@@ -12,7 +12,9 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "axios": "^0.22.0",
+    "babel-jest": "26.6.0",
     "dotenv": "^10.0.0",
+    "jest": "26.6.0",
     "jest-canvas-mock": "^2.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -34,7 +36,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "sudo yarn build && git add . && git commit -m Heroku && git push origin master",
-    "unit_test": "jest"
+    "unit_test": "jest --silent"
   },
   "eslintConfig": {
     "extends": [
@@ -61,9 +63,7 @@
     "@types/react-lottie": "^1.2.6",
     "@types/react-router-dom": "^5.3.1",
     "@types/react-test-renderer": "^18.0.0",
-    "babel-jest": "^28.1.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "25.2.6",
     "react-test-renderer": "17.0.2"
   },
   "jest": {
@@ -72,6 +72,9 @@
       "\\.(css|less|scss|sass)$": "identity-obj-proxy"
     },
     "testEnvironment": "jsdom",
-    "setupFiles": [ "./setupTests.ts", "jest-canvas-mock" ]
+    "setupFiles": [
+      "./setupTests.ts",
+      "jest-canvas-mock"
+    ]
   }
 }

@@ -9,15 +9,17 @@ interface LoadingProps {
 }
 
 const Loading: FC<LoadingProps> = ({ style = { height: 30 }, color }) => (
-    <Lottie
-        options={{
-            animationData: color === 'blue' ? loadingBlueAnimation : loadingWhiteAnimation,
-            autoplay: true,
-            loop: true,
-        }}
-        isClickToPauseDisabled
-        style={style}
-    />
+    <div data-testid='linkbutton-loading' >
+        <Lottie
+            options={{
+                animationData: color === 'blue' ? loadingBlueAnimation : loadingWhiteAnimation,
+                autoplay: true,
+                loop: true,
+            }}
+            isClickToPauseDisabled
+            style={style}
+        />
+    </div>
 )
 
 export default Loading
