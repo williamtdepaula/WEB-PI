@@ -27,7 +27,7 @@ function MapsPage() {
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: ""
+        googleMapsApiKey: process.env.MAPS_KEY ?? ''
     })
 
     const [directionResponse, setDirectionResponse] = useState<google.maps.DirectionsResult | null>(null)

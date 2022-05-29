@@ -47,7 +47,7 @@ describe('LinkButton', () => {
         fireEvent(button, new MouseEvent('click', {
             bubbles: true,
             cancelable: true,
-        }))
+         }))
 
         expect(onPressButtonFN).toBeCalled()
     })
