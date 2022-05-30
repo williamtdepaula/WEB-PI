@@ -7,6 +7,7 @@ import { useAuth } from '../../resources/contexts/AuthContext';
 import { getUBSByPerson } from '../../sevices/requests';
 import ErrorPage from '../../components/error_page';
 import Loading from '../../components/animations/loading';
+require('dotenv').config()
 
 const containerStyle = {
     width: '100vw',
