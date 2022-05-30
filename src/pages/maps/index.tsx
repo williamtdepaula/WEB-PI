@@ -28,15 +28,13 @@ function MapsPage() {
 
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: process.env.REACT_APP_MAPS_KEY ?? 'maps'
+        googleMapsApiKey: process.env.REACT_APP_MAPS_KEY ?? ''
     })
 
     const [directionResponse, setDirectionResponse] = useState<google.maps.DirectionsResult | null>(null)
     const [error, setError] = useState<boolean>(false)
     const [errorLoadMaps, setErrorLoadMaps] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(true)
-
-    console.log('process.env.MAPS_KEY',  process.env.MAPS_KEY)
 
     useEffect(() => {
         startConfig()
