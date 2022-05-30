@@ -36,6 +36,8 @@ function MapsPage() {
     const [errorLoadMaps, setErrorLoadMaps] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(true)
 
+    console.log('process.env.MAPS_KEY',  process.env.MAPS_KEY)
+
     useEffect(() => {
         startConfig()
     }, [isLoaded, CPF, person_address])
