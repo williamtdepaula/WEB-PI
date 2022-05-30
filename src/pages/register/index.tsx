@@ -28,6 +28,7 @@ function Register() {
     const houseNumberRef = useRef<ItemFormRef>(null)
     const streetRef = useRef<ItemFormRef>(null)
     const districtRef = useRef<ItemFormRef>(null)
+    const cityRef = useRef<ItemFormRef>(null)
     const phoneRef = useRef<ItemFormRef>(null)
 
     const isResponsive = useSmallScreen()
@@ -39,6 +40,7 @@ function Register() {
     const [houseNumber, setHouseNumber] = useState<string>("")
     const [street, setStreet] = useState<string>("")
     const [district, setDistrict] = useState<string>("")
+    const [city, setCity] = useState<string>("")
     const [phone, setPhone] = useState<string>("")
     const [gender, setGender] = useState<string>("M")
     const [birthDate, setBirthDate] = useState<string>("")
@@ -55,16 +57,6 @@ function Register() {
     const [errorServer, setErrorServer] = useState<boolean>(false);
 
     useEffect(() => {
-        if ("geolocation" in navigator) {
-            console.log("Available");
-
-            navigator.geolocation.getCurrentPosition(function(position) {
-                console.log("Latitude: ", position.coords.latitude);
-                console.log("Longitude: ", position.coords.longitude);
-            });
-        } else {
-            console.log("Not Available");
-        }
         document.title = 'Cadastro'
         fetchData()
     }, [])
@@ -97,13 +89,13 @@ function Register() {
     }
 
     async function onSave() {
-        if (validateAll([nameRef, houseNumberRef, streetRef, districtRef, emailRef, phoneRef, CPFRef])) {
+        if (validateAll([nameRef, cityRef, districtRef, streetRef, houseNumberRef, emailRef, phoneRef, CPFRef])) {
             setSaving(true)
             const { status } = await savePerson({
                 nome,
                 email,
                 CPF: maskRemoveAllSpecialCharacters(CPF),
-                endereco: treatAddress(houseNumber, street, district),
+                endereco: treatAddress(houseNumber, street, district, city),
                 telefone: maskRemoveAllSpecialCharacters(phone),
                 genero: gender,
                 nascimento: birthDate,
@@ -216,16 +208,28 @@ function Register() {
                             </div>
 
                             <div className="ContainerItemsSideBySide">
+                                <TextInput
+                                    ref={cityRef}
+                                    isValid={addressIsValid(city)}
+                                    title="Cidade"
+                                    placeholder='Cidade'
+                                    errorMessage='Esse campo é obrigatório'
+                                    value={city}
+                                    style={{ width: "100%" }}
+                                    onChange={({ target }) => setCity(target.value)}
+                                    maxLength={200}
+                                />
+                                <span style={{ marginLeft: 20 }} />
                                 
                                 <TextInput
-                                    ref={houseNumberRef}
-                                    isValid={addressIsValid(houseNumber)}
-                                    title="Número da sua residência"
-                                    placeholder='Número da sua residência'
+                                    ref={districtRef}
+                                    isValid={addressIsValid(district)}
+                                    title="Bairro"
+                                    placeholder='Bairro'
                                     errorMessage='Esse campo é obrigatório'
-                                    value={houseNumber}
+                                    value={district}
                                     style={{ width: "100%" }}
-                                    onChange={({ target }) => setHouseNumber(target.value)}
+                                    onChange={({ target }) => setDistrict(target.value)}
                                     maxLength={200}
                                 />
                                 <span style={{ marginLeft: 20 }} />
@@ -241,17 +245,18 @@ function Register() {
                                     onChange={({ target }) => setStreet(target.value)}
                                     maxLength={200}
                                 />
+
                                 <span style={{ marginLeft: 20 }} />
-                                
+
                                 <TextInput
-                                    ref={districtRef}
-                                    isValid={addressIsValid(district)}
-                                    title="Bairro"
-                                    placeholder='Bairro'
+                                    ref={houseNumberRef}
+                                    isValid={addressIsValid(houseNumber)}
+                                    title="Número da sua residência"
+                                    placeholder='Número da sua residência'
                                     errorMessage='Esse campo é obrigatório'
-                                    value={district}
+                                    value={houseNumber}
                                     style={{ width: "100%" }}
-                                    onChange={({ target }) => setDistrict(target.value)}
+                                    onChange={({ target }) => setHouseNumber(target.value)}
                                     maxLength={200}
                                 />
                             </div>

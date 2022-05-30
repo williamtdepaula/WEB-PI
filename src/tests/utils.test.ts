@@ -26,7 +26,7 @@ describe('function getGender', () => {
 
 describe('function treatAddress', () => {
     it('Should return address formated', () => {
-        expect(treatAddress('5', 'Rua Manuel Garcia', 'Campinas')).toBe('5, Rua Manuel Garcia, Campinas')
+        expect(treatAddress('5', 'Rua Manuel Garcia', 'Alameda Josué', 'Vargem Grande Paulista')).toBe('5, Rua Manuel Garcia, Alameda Josué, Vargem Grande Paulista')
     })
 })
 

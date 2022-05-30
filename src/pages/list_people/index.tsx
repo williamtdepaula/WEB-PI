@@ -80,7 +80,7 @@ const ListPeople = () => {
             setPeople(dataToSet);
 
             let { lastPage } = response.pagination;
-            console.log("lastPage", currentPageToFetch < lastPage, {currentPageToFetch, lastPage})
+           
             if (currentPageToFetch < lastPage) {
                 setShowButtonLoadMore(true);
                 setCurrentPage(currentPageToFetch + 1);
@@ -242,7 +242,6 @@ const ListPeople = () => {
                                 </div>
                                 {renderLine()}
                             </div>
-                            {console.log('showButtonLoadMore', showButtonLoadMore)}
                             {showButtonLoadMore &&
                                 <LinkButton
                                     title='Mostrar Mais'

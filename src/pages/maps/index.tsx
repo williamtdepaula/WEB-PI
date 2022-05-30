@@ -87,7 +87,6 @@ function MapsPage() {
     }
 
     async function configRouteInGoogleMaps(pointA: string, pointB: string) {
-        console.log("aq")
         const directionService = new google.maps.DirectionsService()
         try {
             const result = await directionService.route({

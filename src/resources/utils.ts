@@ -27,6 +27,6 @@ export function getBestTimeToContact(charBestTime: String) {
     return charBestTime === "T" ? "Tarde" : "Manhã"
 }
 
-export function treatAddress(houseNumber: string, street: string, disctrict: string) {
-    return `${houseNumber}, ${street}, ${disctrict}` 
+export function treatAddress(houseNumber: string, street: string, disctrict: string, city: string) {
+    return `${houseNumber}, ${street}, ${disctrict}, ${city}` 
 }
